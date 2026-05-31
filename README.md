@@ -83,30 +83,13 @@ Bottom Navigation Tabs
 
 ## Screenshot
 
-### Tab Notes
-![Notes Screen](<img width="1080" height="2280" alt="Screenshot_20260601_045740" src="https://github.com/user-attachments/assets/330f1a0d-52a2-469c-a0c4-db2ea3805837" />
-)
+| Tab Notes | Tambah Catatan | Tab Favorite |
+|-----------|----------------|--------------|
+|<img width="1080" height="2280" alt="Screenshot_20260601_045740" src="https://github.com/user-attachments/assets/63316998-5405-415c-a4c1-18b43b84257a" />|<img width="1080" height="2280" alt="Screenshot_20260601_045906" src="https://github.com/user-attachments/assets/f6a1a16f-4d03-4328-86b4-94c822165844" />|<img width="1080" height="2280" alt="Screenshot_20260601_045936" src="https://github.com/user-attachments/assets/f2ff6b9d-1a19-4f00-96e0-ae6f96bc6817" />|
 
-### Tambah Catatan
-![Add Note Screen](<img width="1080" height="2280" alt="Screenshot_20260601_045906" src="https://github.com/user-attachments/assets/89e46956-f854-4dbe-b070-895db5865e32" />
-)
-
-### Tab Favorites
-![Favorites Screen](<img width="1080" height="2280" alt="Screenshot_20260601_045936" src="https://github.com/user-attachments/assets/eec4a32e-269f-4b6b-b16a-c086492d42da" />
-)
-
-### Tab Profile
-![Profile Screen](<img width="1080" height="2280" alt="Screenshot_20260601_045949" src="https://github.com/user-attachments/assets/e629bac2-f808-464a-a021-424c77c3485a" />
-)
-
-### Edit Catatan
-![Edit Note Screen](<img width="1080" height="2280" alt="Screenshot_20260601_050046" src="https://github.com/user-attachments/assets/65597fe6-3dc2-4dec-8dd4-cecabb34233f" />
-)
-
-### Detail Catatan
-![Detail Screen](<img width="1080" height="2280" alt="Screenshot_20260601_050059" src="https://github.com/user-attachments/assets/bd4de436-c663-4081-a7df-27a1093a3f19" />
-)
-
+| Tab Profile | Edit Catatan | Detail Catatan |
+|-------------|--------------|----------------|
+|<img width="1080" height="2280" alt="Screenshot_20260601_045949" src="https://github.com/user-attachments/assets/8341b187-93ef-4bd0-bdcf-046dc7390071" />|<img width="1080" height="2280" alt="Screenshot_20260601_050046" src="https://github.com/user-attachments/assets/18cad39f-2ef3-4511-a6b6-72d8ba5ebdd9" />|<img width="1080" height="2280" alt="Screenshot_20260601_050059" src="https://github.com/user-attachments/assets/197fe60e-a571-4b8c-a9ee-866e00de1ce5" />|
 
 ---
 
