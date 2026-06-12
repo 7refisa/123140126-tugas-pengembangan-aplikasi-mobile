@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -23,17 +24,23 @@ fun ProfileScreen(
     onEditClick  : () -> Unit,
     onToggleDark : () -> Unit
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .systemBarsPadding() // Mencegah kepotong status bar
+    ) {
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Top section with purple background curve (simplified as a box)
+            // Top section with light purple background and curved bottom
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color(0xFFC795E6).copy(alpha = 0.2f))
-                    .padding(top = 40.dp, bottom = 24.dp),
+                    .clip(RoundedCornerShape(bottomStart = 40.dp, bottomEnd = 40.dp))
+                    .background(Color(0xFFF3E8FF)) // Lebih soft menyatu
+                    .padding(top = 48.dp, bottom = 32.dp),
                 contentAlignment = Alignment.Center
             ) {
                 ProfileHeader(
@@ -42,10 +49,10 @@ fun ProfileScreen(
                 )
             }
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(24.dp))
 
             // Bio Section
-            Box(modifier = Modifier.padding(horizontal = 20.dp)) {
+            Box(modifier = Modifier.padding(horizontal = 24.dp)) {
                 BioSection(bio = uiState.bio)
             }
 
@@ -54,8 +61,9 @@ fun ProfileScreen(
             // Edit Profile Button
             Button(
                 onClick = onEditClick,
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF7C1EAE)),
-                shape = RoundedCornerShape(12.dp)
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8A2BE2)), // Purple
+                shape = RoundedCornerShape(12.dp),
+                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
             ) {
                 Icon(
                     imageVector        = Icons.Rounded.Edit,
@@ -63,20 +71,20 @@ fun ProfileScreen(
                     modifier           = Modifier.size(16.dp)
                 )
                 Spacer(Modifier.width(8.dp))
-                Text("Edit profile info", modifier = Modifier.padding(horizontal = 16.dp))
+                Text("Edit profile info", fontWeight = FontWeight.Bold)
             }
 
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(32.dp))
 
             // Contact Info as Colorful Grid Cards
             Column(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
                     text       = "Contact Info",
                     style      = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.Bold
                 )
 
                 Row(
@@ -87,13 +95,13 @@ fun ProfileScreen(
                         title = "Email",
                         value = uiState.email,
                         color = Color(0xFF98D190), // Green 1
-                        modifier = Modifier.weight(1f).aspectRatio(1.2f)
+                        modifier = Modifier.weight(1f).defaultMinSize(minHeight = 120.dp)
                     )
                     ColoredAppInfoCard(
                         title = "Phone",
                         value = uiState.phone,
                         color = Color(0xFF8BE18B), // Green 2
-                        modifier = Modifier.weight(1f).aspectRatio(1.2f)
+                        modifier = Modifier.weight(1f).defaultMinSize(minHeight = 120.dp)
                     )
                 }
                 Row(
@@ -104,7 +112,7 @@ fun ProfileScreen(
                         title = "Location",
                         value = uiState.location,
                         color = Color(0xFFECA343), // Orange
-                        modifier = Modifier.weight(1f).aspectRatio(1.2f)
+                        modifier = Modifier.weight(1f).defaultMinSize(minHeight = 120.dp)
                     )
                     // Empty box to maintain grid alignment
                     Box(modifier = Modifier.weight(1f))
@@ -112,7 +120,7 @@ fun ProfileScreen(
             }
         }
 
-        // Toggle
+        // Toggle Dark Mode
         Switch(
             checked         = uiState.isDarkMode,
             onCheckedChange = { onToggleDark() },
@@ -124,7 +132,7 @@ fun ProfileScreen(
             },
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(12.dp)
+                .padding(top = 16.dp, end = 16.dp)
         )
     }
 }
@@ -150,7 +158,8 @@ private fun ColoredAppInfoCard(
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodySmall,
-                color = textColor.copy(alpha = 0.7f)
+                color = textColor.copy(alpha = 0.7f),
+                modifier = Modifier.padding(bottom = 8.dp)
             )
             Box(
                 modifier = Modifier.fillMaxWidth().weight(1f),
@@ -160,7 +169,8 @@ private fun ColoredAppInfoCard(
                     text = value,
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
-                    color = textColor
+                    color = textColor,
+                    lineHeight = 18.sp
                 )
             }
         }
