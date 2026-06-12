@@ -26,16 +26,18 @@ fun App(profileViewModel: ProfileViewModel = viewModel { ProfileViewModel() }) {
         ) {
             if (uiState.isEditMode) {
                 EditProfileScreen(
-                    currentName = uiState.name,
-                    currentBio  = uiState.bio,
-                    onSave      = { name, bio -> profileViewModel.saveProfile(name, bio) },
+                    uiState     = uiState,
+                    onSave      = { name, bio, email, phone, location -> 
+                        profileViewModel.saveProfile(name, bio, email, phone, location) 
+                    },
                     onCancel    = { profileViewModel.closeEditMode() }
                 )
             } else {
                 ProfileScreen(
                     uiState      = uiState,
                     onEditClick  = { profileViewModel.openEditMode() },
-                    onToggleDark = { profileViewModel.toggleDarkMode() }
+                    onToggleDark = { profileViewModel.toggleDarkMode() },
+                    onSaveContact= { field, value -> profileViewModel.updateContactField(field, value) }
                 )
             }
         }

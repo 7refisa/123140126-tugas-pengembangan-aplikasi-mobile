@@ -41,8 +41,11 @@ val IconGreen = Color(0xFFAED581)
 fun ProfileScreen(
     uiState      : ProfileUiState,
     onEditClick  : () -> Unit,
-    onToggleDark : () -> Unit
+    onToggleDark : () -> Unit,
+    onSaveContact: (String, String) -> Unit
 ) {
+    var editContactDialog by remember { mutableStateOf<Pair<String, String>?>(null) }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -134,7 +137,7 @@ fun ProfileScreen(
                         text = uiState.role.uppercase(),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = LightText,
+                        color = if (uiState.isDarkMode) Color.LightGray else LightText,
                         letterSpacing = 1.sp
                     )
                 }
@@ -152,7 +155,7 @@ fun ProfileScreen(
             ) {
                 Text(
                     text = uiState.bio.takeIf { it.isNotBlank() } ?: "No bio provided.",
-                    color = DarkText,
+                    color = DarkText, // Tetap gelap karena background banner hijau
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Medium,
                     maxLines = 2
@@ -183,7 +186,8 @@ fun ProfileScreen(
                     iconBgColor = IconYellow,
                     label = "Email",
                     value = uiState.email,
-                    isDarkMode = uiState.isDarkMode
+                    isDarkMode = uiState.isDarkMode,
+                    onClick = { editContactDialog = "Email" to uiState.email }
                 )
                 HorizontalDivider(modifier = Modifier.padding(horizontal = 24.dp), color = LightText.copy(alpha = 0.2f))
                 ContactListItem(
@@ -191,7 +195,8 @@ fun ProfileScreen(
                     iconBgColor = IconPink,
                     label = "Phone",
                     value = uiState.phone,
-                    isDarkMode = uiState.isDarkMode
+                    isDarkMode = uiState.isDarkMode,
+                    onClick = { editContactDialog = "Phone" to uiState.phone }
                 )
                 HorizontalDivider(modifier = Modifier.padding(horizontal = 24.dp), color = LightText.copy(alpha = 0.2f))
                 ContactListItem(
@@ -199,9 +204,41 @@ fun ProfileScreen(
                     iconBgColor = IconGreen,
                     label = "Location",
                     value = uiState.location,
-                    isDarkMode = uiState.isDarkMode
+                    isDarkMode = uiState.isDarkMode,
+                    onClick = { editContactDialog = "Location" to uiState.location }
                 )
             }
+        }
+
+        // Dialog Pop-up
+        editContactDialog?.let { (label, value) ->
+            var inputValue by remember { mutableStateOf(value) }
+            AlertDialog(
+                onDismissRequest = { editContactDialog = null },
+                title = { Text(text = "Edit $label", color = if (uiState.isDarkMode) Color.White else DarkText) },
+                text = {
+                    OutlinedTextField(
+                        value = inputValue,
+                        onValueChange = { inputValue = it },
+                        label = { Text(label) },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                },
+                confirmButton = {
+                    TextButton(onClick = {
+                        onSaveContact(label, inputValue)
+                        editContactDialog = null
+                    }) {
+                        Text("Save")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { editContactDialog = null }) {
+                        Text("Cancel")
+                    }
+                }
+            )
         }
     }
 }
@@ -212,11 +249,13 @@ private fun ContactListItem(
     iconBgColor: Color,
     label: String,
     value: String,
-    isDarkMode: Boolean
+    isDarkMode: Boolean,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable(onClick = onClick)
             .padding(horizontal = 20.dp, vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -248,7 +287,7 @@ private fun ContactListItem(
                 Text(
                     text = value,
                     fontSize = 12.sp,
-                    color = LightText,
+                    color = if (isDarkMode) Color.LightGray else LightText,
                     maxLines = 1
                 )
             }
@@ -256,8 +295,8 @@ private fun ContactListItem(
         
         Icon(
             imageVector = Icons.Rounded.KeyboardArrowRight,
-            contentDescription = "Go",
-            tint = LightText
+            contentDescription = "Edit",
+            tint = if (isDarkMode) Color.LightGray else LightText
         )
     }
 }
