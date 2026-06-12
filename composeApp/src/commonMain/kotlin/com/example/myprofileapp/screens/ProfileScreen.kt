@@ -109,29 +109,51 @@ fun ProfileContent(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // ── Info aplikasi ─────────────────────────────────────────────
-            Text(
-                text       = "Tentang Aplikasi",
-                style      = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                modifier   = Modifier.align(Alignment.Start)
-            )
-
-            Card(
+            // ── Info aplikasi (Colorful Grid) ─────────────────────────────
+            Column(
                 modifier = Modifier.fillMaxWidth(),
-                shape    = RoundedCornerShape(12.dp),
-                colors   = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                )
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Column(
-                    modifier            = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                Text(
+                    text       = "Tentang Aplikasi",
+                    style      = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    InfoRow(label = "Mata Kuliah", value = "Pengembangan Aplikasi Mobile")
-                    InfoRow(label = "Pertemuan",   value = "5 — Navigasi Antar Layar")
-                    InfoRow(label = "Framework",   value = "Compose Multiplatform")
-                    InfoRow(label = "Versi",       value = "1.0.0")
+                    ColoredAppInfoCard(
+                        title = "Mata Kuliah",
+                        value = "PAM",
+                        color = Color(0xFF98D190), // Green 1
+                        modifier = Modifier.weight(1f).aspectRatio(1f)
+                    )
+                    ColoredAppInfoCard(
+                        title = "Pertemuan",
+                        value = "5",
+                        color = Color(0xFF8BE18B), // Green 2
+                        modifier = Modifier.weight(1f).aspectRatio(1f)
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    ColoredAppInfoCard(
+                        title = "Framework",
+                        value = "Compose",
+                        color = Color(0xFFECA343), // Orange
+                        modifier = Modifier.weight(1f).aspectRatio(1f)
+                    )
+                    ColoredAppInfoCard(
+                        title = "Versi",
+                        value = "1.0.0",
+                        color = Color(0xFF29225E), // Dark Blue
+                        textColor = Color.White,
+                        modifier = Modifier.weight(1f).aspectRatio(1f)
+                    )
                 }
             }
         }
@@ -163,22 +185,40 @@ private fun StatItem(
     }
 }
 
-/** Satu baris info label: value */
 @Composable
-private fun InfoRow(label: String, value: String) {
-    Row(
-        modifier              = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+private fun ColoredAppInfoCard(
+    title: String,
+    value: String,
+    color: Color,
+    modifier: Modifier = Modifier,
+    textColor: Color = Color.Black
+) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = color)
     ) {
-        Text(
-            text  = label,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.outline
-        )
-        Text(
-            text       = value,
-            style      = MaterialTheme.typography.bodySmall,
-            fontWeight = FontWeight.Medium
-        )
+        Column(
+            modifier = Modifier.fillMaxSize().padding(16.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyMedium,
+                color = textColor.copy(alpha = 0.7f)
+            )
+            Box(
+                modifier = Modifier.fillMaxWidth().weight(1f),
+                contentAlignment = Alignment.BottomStart
+            ) {
+                Text(
+                    text = value,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = textColor
+                )
+            }
+        }
     }
 }
