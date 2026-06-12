@@ -6,8 +6,10 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -26,17 +28,25 @@ import com.example.myprofileapp.screens.ProfileScreen
 
 // ─────────────────────────────────────────────────────────────────────────────
 // App.kt — Root Composable
-//
-// Struktur:
-//   MaterialTheme
-//     └── Scaffold
-//           ├── bottomBar: BottomNavigationBar (hanya di top-level screens)
-//           └── content:   NavHost (semua destination terdaftar di sini)
 // ─────────────────────────────────────────────────────────────────────────────
+
+val CreamColorScheme = lightColorScheme(
+    primary = Color(0xFFA5B872), // GreenBanner
+    onPrimary = Color(0xFF2C2C2C), // DarkText
+    primaryContainer = Color(0xFFF2ECE0), // CardBackground
+    onPrimaryContainer = Color(0xFF2C2C2C), // DarkText
+    background = Color(0xFFFAF5E9), // CreamBackground
+    onBackground = Color(0xFF2C2C2C), // DarkText
+    surface = Color(0xFFFAF5E9), // CreamBackground
+    onSurface = Color(0xFF2C2C2C), // DarkText
+    surfaceVariant = Color(0xFFF2ECE0), // CardBackground
+    onSurfaceVariant = Color(0xFF7A7A7A), // LightText
+    outline = Color(0xFF7A7A7A) // LightText
+)
 
 @Composable
 fun App() {
-    MaterialTheme {
+    MaterialTheme(colorScheme = CreamColorScheme) {
         AppNavigation()
     }
 }
