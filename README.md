@@ -1,4 +1,4 @@
-# Tugas 4 - State Management MVVM
+# Tugas Minggu 4 - State Management MVVM
 
 | Nama | NIM |
 | --- | --- |
