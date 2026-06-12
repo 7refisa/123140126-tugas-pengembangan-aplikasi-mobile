@@ -1,35 +1,33 @@
-# Tugas 4 - Pengembangan Aplikasi Mobile
+# Tugas 4 - State Management MVVM
 
-## Identitas Mahasiswa
-* **Nama:** Refi Ikhsanti
-* **NIM:** 123140126
-* **Program Studi:** Teknik Informatika
+| Nama | NIM |
+| --- | --- |
+| Refi Ikhsanti | 123140126 |
+
+
+**Mata Kuliah:** IF25-22017 Pengembangan Aplikasi Mobile  
+**Program Studi:** Teknik Informatika — Institut Teknologi Sumatera  
+**Tahun Akademik:** Genap 2025/2026
 
 ---
 
 ## Screenshots
 **Light Mode**
-
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/73aeade3-ce54-45a8-9b2e-a4fc87f5b561" />
-
-**Edit Profil**
-
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/37382fe8-1e7d-444f-9b58-ecbdfb17e171" />
+| Profile | Edit Profile | Dialog Pop-Up |
+| --- | --- | --- |
+| <img width="1080" height="2400" alt="Screenshot_20260612_232723" src="https://github.com/user-attachments/assets/3d1864b0-bd2a-45e6-a92e-9f0645a0aa0e" /> | <img width="1080" height="2400" alt="Screenshot_20260612_232743" src="https://github.com/user-attachments/assets/b5787560-f878-496c-a5f5-78f3c5e1da50" /> | <img width="1080" height="2400" alt="Screenshot_20260612_234133" src="https://github.com/user-attachments/assets/c9dfa544-5ff2-4d24-aa93-a39db294ab9c" /> |
 
 **Dark Mode**
-
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/389f5af2-1dcc-4a6d-a580-15085027d279" />
-
-**Pop Up Contact Information**
-
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/a57760b7-20a7-4ef5-9cf4-864327e753d1" />
+| Profile | Edit Profile | Dialog Pop-Up | 
+| --- | --- | --- | 
+| <img width="1080" height="2400" alt="Screenshot_20260612_232818" src="https://github.com/user-attachments/assets/abf894c6-01ba-4597-a900-6b108613a568" /> | <img width="1080" height="2400" alt="Screenshot_20260612_232831" src="https://github.com/user-attachments/assets/b6494ba0-fa07-4f21-82e5-fab50e9661b2" /> | <img width="1080" height="2400" alt="Screenshot_20260612_234146" src="https://github.com/user-attachments/assets/2af2f4f9-88a0-46b1-9579-fa8483156272" /> |
 
 ---
 
 ## Fitur
-- **Tampilan Profil (Clinical UI Theme)** — menampilkan foto, nama, dan role rata kiri dengan *badge* edit, disertai *banner* hijau untuk bio dan *background* berwarna *cream* hangat.
-- **Edit Profil Menyeluruh** — form edit profil sekarang diperluas, memungkinkan pengguna untuk tidak hanya mengubah nama dan bio, melainkan juga informasi kontak (Email, Phone, Location) dengan desain *text field* yang variatif.
-- **Dark / Light Mode** — toggle interaktif di pojok kanan atas dengan indikator emoji 🌙 / ☀️. Warna teks pada mode gelap sudah dioptimalkan agar tetap terbaca jelas.
+- **Tampilan Profile** — menampilkan foto, nama, dan role rata kiri dengan *badge* edit, disertai *banner* hijau untuk bio dan *background* berwarna *cream* hangat.
+- **Edit Profile** — form edit profil, memungkinkan pengguna untuk tidak hanya mengubah nama dan bio, melainkan juga informasi kontak (Email, Phone, Location).
+- **Dark / Light Mode** — toggle interaktif di pojok kanan atas dengan indikator emoji 🌙 / ☀️.
 - **Daftar Kontak Interaktif** — informasi kontak ditampilkan dalam bentuk *list* dengan ikon bulat berwarna-warni. Setiap *list item* dapat diklik untuk menampilkan dialog pop-up berisi detail informasi kontaknya.
 
 ---
