@@ -7,11 +7,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Email
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.LocationOn
+import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.Phone
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myprofileapp.data.ProfileUiState
@@ -59,7 +65,8 @@ fun EditProfileScreen(
                     text = "Edit Profile",
                     fontSize = 24.sp,
                     style = MaterialTheme.typography.titleLarge,
-                    color = if (uiState.isDarkMode) Color.White else DarkText
+                    color = if (uiState.isDarkMode) Color.White else DarkText,
+                    fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
                 )
             }
 
@@ -69,6 +76,7 @@ fun EditProfileScreen(
             EditTextField(
                 label = "Name",
                 value = nameInput,
+                icon = Icons.Rounded.Person,
                 onValueChange = { nameInput = it },
                 isDarkMode = uiState.isDarkMode
             )
@@ -76,6 +84,7 @@ fun EditProfileScreen(
             EditTextField(
                 label = "Bio",
                 value = bioInput,
+                icon = Icons.Rounded.Info,
                 onValueChange = { bioInput = it },
                 singleLine = false,
                 minLines = 3,
@@ -85,6 +94,7 @@ fun EditProfileScreen(
             EditTextField(
                 label = "Email",
                 value = emailInput,
+                icon = Icons.Rounded.Email,
                 onValueChange = { emailInput = it },
                 isDarkMode = uiState.isDarkMode
             )
@@ -92,6 +102,7 @@ fun EditProfileScreen(
             EditTextField(
                 label = "Phone",
                 value = phoneInput,
+                icon = Icons.Rounded.Phone,
                 onValueChange = { phoneInput = it },
                 isDarkMode = uiState.isDarkMode
             )
@@ -99,6 +110,7 @@ fun EditProfileScreen(
             EditTextField(
                 label = "Location",
                 value = locationInput,
+                icon = Icons.Rounded.LocationOn,
                 onValueChange = { locationInput = it },
                 isDarkMode = uiState.isDarkMode
             )
@@ -137,6 +149,7 @@ fun EditProfileScreen(
 fun EditTextField(
     label: String,
     value: String,
+    icon: ImageVector,
     onValueChange: (String) -> Unit,
     singleLine: Boolean = true,
     minLines: Int = 1,
@@ -146,12 +159,21 @@ fun EditTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(label, color = if (isDarkMode) Color.LightGray else LightText) },
+        leadingIcon = {
+            Icon(
+                imageVector = icon,
+                contentDescription = label,
+                tint = if (isDarkMode) Color.LightGray else LightText
+            )
+        },
         singleLine = singleLine,
         minLines = minLines,
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier.fillMaxWidth(),
         colors = OutlinedTextFieldDefaults.colors(
-            unfocusedBorderColor = LightText.copy(alpha = 0.3f),
+            unfocusedContainerColor = if (isDarkMode) Color(0xFF2C2C2C) else Color.White,
+            focusedContainerColor = if (isDarkMode) Color(0xFF3C3C3C) else Color.White,
+            unfocusedBorderColor = if (isDarkMode) Color.DarkGray else Color(0xFFD6CDBB),
             focusedBorderColor = GreenBanner,
             unfocusedTextColor = if (isDarkMode) Color.White else DarkText,
             focusedTextColor = if (isDarkMode) Color.White else DarkText

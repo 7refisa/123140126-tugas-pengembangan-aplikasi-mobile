@@ -212,30 +212,25 @@ fun ProfileScreen(
 
         // Dialog Pop-up
         editContactDialog?.let { (label, value) ->
-            var inputValue by remember { mutableStateOf(value) }
             AlertDialog(
                 onDismissRequest = { editContactDialog = null },
-                title = { Text(text = "Edit $label", color = if (uiState.isDarkMode) Color.White else DarkText) },
+                title = { 
+                    Text(
+                        text = "$label Details", 
+                        color = if (uiState.isDarkMode) Color.White else DarkText,
+                        fontWeight = FontWeight.Bold
+                    ) 
+                },
                 text = {
-                    OutlinedTextField(
-                        value = inputValue,
-                        onValueChange = { inputValue = it },
-                        label = { Text(label) },
-                        singleLine = true,
-                        modifier = Modifier.fillMaxWidth()
+                    Text(
+                        text = value,
+                        fontSize = 16.sp,
+                        color = if (uiState.isDarkMode) Color.LightGray else DarkText
                     )
                 },
                 confirmButton = {
-                    TextButton(onClick = {
-                        onSaveContact(label, inputValue)
-                        editContactDialog = null
-                    }) {
-                        Text("Save")
-                    }
-                },
-                dismissButton = {
                     TextButton(onClick = { editContactDialog = null }) {
-                        Text("Cancel")
+                        Text("Close", fontWeight = FontWeight.Bold, color = GreenBanner)
                     }
                 }
             )
