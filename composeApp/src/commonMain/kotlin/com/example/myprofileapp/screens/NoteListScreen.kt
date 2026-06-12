@@ -44,8 +44,7 @@ fun NoteListContent(
             FloatingActionButton(
                 onClick        = onAddClick,
                 containerColor = MaterialTheme.colorScheme.primary,
-                contentColor   = MaterialTheme.colorScheme.onPrimary,
-                modifier       = Modifier.padding(bottom = 56.dp)
+                contentColor   = MaterialTheme.colorScheme.onPrimary
             ) {
                 Icon(Icons.Default.Add, contentDescription = "Tambah catatan")
             }

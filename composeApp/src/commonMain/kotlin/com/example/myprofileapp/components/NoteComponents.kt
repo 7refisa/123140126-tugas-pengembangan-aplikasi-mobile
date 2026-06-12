@@ -16,7 +16,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.graphics.Color
 import com.example.myprofileapp.data.Note
+
+val PinkAccent = Color(0xFFFF2A6D) // Bolder, more vibrant pink
 
 /**
  * Card catatan dengan tombol toggle favorit (❤️).
@@ -38,7 +41,7 @@ fun NoteCard(
             .clickable(onClick = onClick),
         shape     = RoundedCornerShape(16.dp),
         colors    = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = MaterialTheme.colorScheme.primary
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
@@ -53,6 +56,7 @@ fun NoteCard(
                     text       = note.title,
                     style      = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
+                    color      = MaterialTheme.colorScheme.onPrimary,
                     maxLines   = 1,
                     overflow   = TextOverflow.Ellipsis
                 )
@@ -60,7 +64,7 @@ fun NoteCard(
                 Text(
                     text     = note.content,
                     style    = MaterialTheme.typography.bodySmall,
-                    color    = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color    = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -68,7 +72,7 @@ fun NoteCard(
                 Text(
                     text     = note.createdAt,
                     style    = MaterialTheme.typography.labelSmall,
-                    color    = MaterialTheme.colorScheme.outline,
+                    color    = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
                     fontSize = 10.sp
                 )
             }
@@ -82,7 +86,7 @@ fun NoteCard(
                     else Icons.Default.FavoriteBorder,
                     contentDescription = if (note.isFavorite) "Hapus dari favorit"
                     else "Tambah ke favorit",
-                    tint               = if (note.isFavorite) MaterialTheme.colorScheme.primary
+                    tint               = if (note.isFavorite) PinkAccent
                     else MaterialTheme.colorScheme.outline
                 )
             }
@@ -134,7 +138,7 @@ fun FavoriteActionButton(isFavorite: Boolean, onClick: () -> Unit) {
             imageVector        = if (isFavorite) Icons.Default.Favorite
             else Icons.Default.FavoriteBorder,
             contentDescription = if (isFavorite) "Hapus dari favorit" else "Tambah ke favorit",
-            tint               = if (isFavorite) MaterialTheme.colorScheme.primary
+            tint               = if (isFavorite) PinkAccent
             else MaterialTheme.colorScheme.onSurface
         )
     }

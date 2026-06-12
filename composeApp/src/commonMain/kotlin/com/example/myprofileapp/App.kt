@@ -9,6 +9,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import androidx.navigation.NavType
@@ -83,7 +85,8 @@ fun AppNavigation() {
         // ── 3. NavHost: mendaftarkan semua destination ───────────────────────
         NavHost(
             navController    = navController,
-            startDestination = Screen.NoteList.route   // Screen pertama saat app dibuka
+            startDestination = Screen.NoteList.route,
+            modifier         = Modifier.padding(bottom = innerPadding.calculateBottomPadding())
         ) {
 
             // ================================================================
@@ -198,7 +201,10 @@ fun BottomNavigationBar(navController: NavController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute      = navBackStackEntry?.destination?.route
 
-    NavigationBar {
+    NavigationBar(
+        containerColor = Color(0xFFFAF5E9),
+        contentColor = Color(0xFF2C2C2C)
+    ) {
         BottomNavItem.items.forEach { item ->
             NavigationBarItem(
                 selected = currentRoute == item.route,
@@ -221,7 +227,14 @@ fun BottomNavigationBar(navController: NavController) {
                         contentDescription = item.label
                     )
                 },
-                label = { Text(text = item.label) }
+                label = { Text(text = item.label) },
+                colors = androidx.compose.material3.NavigationBarItemDefaults.colors(
+                    selectedIconColor = Color(0xFF2C2C2C),
+                    unselectedIconColor = Color(0xFF7A7A7A),
+                    selectedTextColor = Color(0xFF2C2C2C),
+                    unselectedTextColor = Color(0xFF7A7A7A),
+                    indicatorColor = Color(0xFFFFE066) // Yellow accent
+                )
             )
         }
     }
