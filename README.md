@@ -27,10 +27,10 @@
 ---
 
 ## Fitur
-- **Tampilan Profil** — menampilkan foto, nama, role, dan bio secara terpusat
-- **Edit Profil** — nama dan bio dapat diubah langsung melalui form edit
-- **Dark / Light Mode** — toggle di pojok kanan atas dengan indikator emoji 🌙 / ☀️
-- **Contact Me** — dialog popup yang menampilkan email, nomor telepon, dan lokasi
+- **Tampilan Profil (Clinical UI Theme)** — menampilkan foto, nama, dan role rata kiri dengan *badge* edit, disertai *banner* hijau untuk bio dan *background* berwarna *cream* hangat.
+- **Edit Profil Menyeluruh** — form edit profil sekarang diperluas, memungkinkan pengguna untuk tidak hanya mengubah nama dan bio, melainkan juga informasi kontak (Email, Phone, Location) dengan desain *text field* yang variatif.
+- **Dark / Light Mode** — toggle interaktif di pojok kanan atas dengan indikator emoji 🌙 / ☀️. Warna teks pada mode gelap sudah dioptimalkan agar tetap terbaca jelas.
+- **Daftar Kontak Interaktif** — informasi kontak ditampilkan dalam bentuk *list* dengan ikon bulat berwarna-warni. Setiap *list item* dapat diklik untuk menampilkan dialog pop-up berisi detail informasi kontaknya.
 
 ---
 
