@@ -1,4 +1,4 @@
-# Tugas Praktikum Minggu 5 — Navigasi Antar Layar
+# Tugas Praktikum Minggu 6 — Networking & REST API
 
 **Mata Kuliah:** IF25-22017 Pengembangan Aplikasi Mobile  
 **Program Studi:** Teknik Informatika — Institut Teknologi Sumatera  
@@ -8,125 +8,80 @@
 
 ## Deskripsi
 
-Aplikasi **Notes App** berbasis Compose Multiplatform yang mengimplementasikan navigasi multi-screen menggunakan Jetpack Navigation Compose. Dikembangkan dari tugas minggu sebelumnya dengan menambahkan fitur navigasi lengkap antar layar.
+Aplikasi **Notes App & News Reader** berbasis Compose Multiplatform. Dikembangkan dari tugas minggu sebelumnya (Minggu 5: Navigasi Antar Layar) dengan menambahkan fitur pengambilan data dari Internet (*networking*) melalui Ktor Client untuk memuat daftar berita terkini menggunakan REST API.
 
 ---
 
 ## Fitur yang Diimplementasikan
 
-- **Bottom Navigation** dengan 3 tab: Notes, Favorites, Profile
-- **Tambah catatan** baru via Floating Action Button (FAB)
-- **Edit catatan** yang sudah ada dengan passing `noteId` sebagai argument
-- **Detail catatan** dengan tombol edit dan toggle favorit
-- **Toggle favorit** langsung dari list maupun halaman detail
-- **Tab Favorites** menampilkan hanya catatan yang di-favorit-kan
-- **Back navigation** yang proper dari semua screen
+- **Tab News Baru** di dalam Bottom Navigation.
+- **Fetch API Otomatis** saat halaman News dibuka.
+- **Pull-to-Refresh** untuk menyegarkan daftar berita dari server kapan saja.
+- **State Management (Loading, Success, Error)** untuk mempermudah UX saat data diambil dari internet atau saat koneksi terputus.
+- **Parsing JSON Otomatis** dengan *Kotlinx Serialization*.
+- **Memuat Gambar secara Asinkron** (*Lazy Image Loading*) dari link gambar (*urlToImage*) yang dikembalikan oleh API menggunakan `Coil3`.
+- **Detail Berita** menampilkan tautan atau placeholder artikel ketika diklik.
+- Mempertahankan seluruh fungsionalitas dari tugas sebelumnya (Note, Favorites, Profile, dan sinkronisasi Dark Mode lintas tab).
 
 ---
 
-## Struktur Folder
+## Struktur Folder Terkini (Fokus Week 6)
 
 ```
 commonMain/kotlin/com/example/myprofileapp/
 │
 ├── navigation/
-│   ├── Screen.kt              # Sealed class semua routes (type-safe)
-│   └── BottomNavItem.kt       # Sealed class 3 item bottom navigation
+│   ├── Screen.kt              # Tambahan object NewsList & NewsDetail
+│   └── BottomNavItem.kt       # Tambahan tab News
 │
 ├── screens/
-│   ├── NoteListScreen.kt      # Tab Notes + FAB tambah catatan
-│   ├── NoteDetailScreen.kt    # Detail catatan + toggle favorit + edit
-│   ├── AddEditNoteScreen.kt   # Form tambah & edit catatan
-│   ├── FavoritesScreen.kt     # Tab Favorites
-│   └── ProfileScreen.kt       # Tab Profile
+│   ├── NewsListScreen.kt      # List berita + UI State (Loading/Error/Success) + Pull-to-Refresh
+│   ├── NewsDetailScreen.kt    # Menampilkan parameter detail (URL)
+│   └── ... (screen tugas 5 lainnya)
 │
 ├── components/
-│   └── NoteComponents.kt      # Komponen UI stateless yang reusable
+│   └── NoteComponents.kt      
 │
 ├── data/
-│   ├── Note.kt                # Data class model catatan
-│   └── NoteRepository.kt      # Repository dengan mutableStateListOf
+│   ├── Article.kt             # Data class model @Serializable untuk response berita
+│   ├── NewsRepository.kt      # Mengelola Ktor HttpClient dan fetch ke REST API (mock API)
+│   └── ... (Note repo dari tugas 5)
 │
-└── App.kt                     # Root: Scaffold + NavHost lengkap
+├── viewmodel/
+│   ├── NewsViewModel.kt       # View model khusus News (Coroutine launch + StateFlow)
+│   └── ProfileViewModel.kt    
+│
+└── App.kt                     # Integrasi ViewModel & Composables ke Navigation
 ```
 
 ---
 
-## Arsitektur Navigasi
+## Arsitektur & Networking
 
-```
-Bottom Navigation Tabs
-├── Notes      →  NoteListScreen
-│                   ├── [Card] → NoteDetailScreen (noteId: Int)
-│                   │               └── [Edit] → EditNoteScreen (noteId: Int)
-│                   └── [FAB+] → AddNoteScreen
-├── Favorites  →  FavoritesScreen
-│                   └── [Card] → NoteDetailScreen (noteId: Int)
-└── Profile    →  ProfileScreen
-```
-
-**Navigation Options yang digunakan:**
-- `popUpTo(Screen.NoteList.route) { saveState = true }` — cegah back stack menumpuk saat ganti tab
-- `launchSingleTop = true` — cegah duplikat screen di atas stack
-- `restoreState = true` — pulihkan state tab sebelumnya
+Aplikasi ini menggunakan architecture `MVVM` yang dikombinasikan dengan `StateFlow`:
+1. `NewsRepository` memanggil REST API menggunakan `HttpClient.get()` dan me-return `Result<List<Article>>`.
+2. `NewsViewModel` mengatur mutasi UI state melalui *sealed class* `NewsUiState`.
+3. `NewsListScreen` me-listen via `collectAsState()` dan merender UI sesuai status terkini secara reaktif.
 
 ---
 
-## Passing Arguments
-
-| Route | Argument | Tipe | Keterangan |
-|-------|----------|------|------------|
-| `note_detail/{noteId}` | `noteId` | `NavType.IntType` | ID catatan yang ditampilkan |
-| `edit_note/{noteId}` | `noteId` | `NavType.IntType` | ID catatan yang diedit |
-
----
-
-## Screenshot
-
-| Tab Notes | Tambah Catatan | Tab Favorite |
-|-----------|----------------|--------------|
-|<img width="1080" height="2280" alt="Screenshot_20260601_045740" src="https://github.com/user-attachments/assets/63316998-5405-415c-a4c1-18b43b84257a" />|<img width="1080" height="2280" alt="Screenshot_20260601_045906" src="https://github.com/user-attachments/assets/f6a1a16f-4d03-4328-86b4-94c822165844" />|<img width="1080" height="2280" alt="Screenshot_20260601_045936" src="https://github.com/user-attachments/assets/f2ff6b9d-1a19-4f00-96e0-ae6f96bc6817" />|
-
-| Tab Profile | Edit Catatan | Detail Catatan |
-|-------------|--------------|----------------|
-|<img width="1080" height="2280" alt="Screenshot_20260601_045949" src="https://github.com/user-attachments/assets/8341b187-93ef-4bd0-bdcf-046dc7390071" />|<img width="1080" height="2280" alt="Screenshot_20260601_050046" src="https://github.com/user-attachments/assets/18cad39f-2ef3-4511-a6b6-72d8ba5ebdd9" />|<img width="1080" height="2280" alt="Screenshot_20260601_050059" src="https://github.com/user-attachments/assets/197fe60e-a571-4b8c-a9ee-866e00de1ce5" />|
-
----
-
-## Navigation Flow Demo
-
-> Video demo: 
-
-https://github.com/user-attachments/assets/594f43d9-c425-4077-a6fb-0781fec09235
-
-
----
-
-## Teknologi
+## Teknologi yang Digunakan
 
 | Komponen | Library |
 |----------|---------|
 | UI Framework | Compose Multiplatform |
-| Navigasi | `org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10` |
-| State Management | `mutableStateListOf` (in-memory) |
-| Arsitektur | MVVM + State Hoisting |
-| Target Platform | Android |
-
----
-
-## Dependency yang Ditambahkan
-
-```kotlin
-// composeApp/build.gradle.kts — commonMain.dependencies
-implementation("org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10")
-implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4")
-```
+| Navigasi | `navigation-compose` |
+| Networking / HTTP Client | `io.ktor:ktor-client-core:2.3.7` (beserta engine OkHttp untuk Android) |
+| JSON Serialization | `io.ktor:ktor-serialization-kotlinx-json:2.3.7` |
+| Image Loader | `io.coil-kt.coil3:coil-compose:3.0.4` |
+| Asynchronous Processing | Kotlin Coroutines |
 
 ---
 
 ## Cara Menjalankan
 
-1. Clone repository ini
-2. Buka dengan Android Studio Hedgehog atau lebih baru
-3. Sync Gradle
-4. Jalankan di emulator atau device Android (min. API 26)
+1. Clone repository ini.
+2. Buka dengan Android Studio Hedgehog atau lebih baru.
+3. Tunggu hingga proses *Sync Gradle* dan *Downloading Dependencies* selesai (mungkin akan membutuhkan waktu sedikit lebih lama karena penambahan library Ktor dan Coil).
+4. Jalankan aplikasi di emulator atau *device* Android dengan koneksi internet yang aktif.
+5. Akses tab **News** pada *Bottom Navigation* untuk melihat hasil *fetching* REST API!
