@@ -1,4 +1,4 @@
-# Tugas Praktikum Minggu 6 — Networking & REST API
+# Tugas Minggu 6 — Networking & REST API
 
 **Mata Kuliah:** IF25-22017 Pengembangan Aplikasi Mobile  
 **Program Studi:** Teknik Informatika — Institut Teknologi Sumatera  
@@ -75,6 +75,20 @@ Aplikasi ini menggunakan architecture `MVVM` yang dikombinasikan dengan `StateFl
 | JSON Serialization | `io.ktor:ktor-serialization-kotlinx-json:2.3.7` |
 | Image Loader | `io.coil-kt.coil3:coil-compose:3.0.4` |
 | Asynchronous Processing | Kotlin Coroutines |
+
+---
+
+## Screenshots 
+
+| Success State | Pull to Refresh | Detail Screen | Error State | Loading State |
+| --- | --- | --- | --- | --- |
+| <img width="1080" height="2400" alt="Screenshot_20260613_170216" src="https://github.com/user-attachments/assets/c857ae5d-54d8-499d-a956-4cf08dd31b47" /> | <img width="1080" height="2400" alt="Screenshot_20260613_170239" src="https://github.com/user-attachments/assets/3c81fcf3-d560-4fb4-8280-4b40d4863290" /> | <img width="1080" height="2400" alt="Screenshot_20260613_170313" src="https://github.com/user-attachments/assets/031f8bb8-6028-4832-b92d-c57f5dda328b" /> |<img width="1080" height="2400" alt="Screenshot_20260613_170521" src="https://github.com/user-attachments/assets/365a5b29-97a0-4247-9d5c-5d75441c8c14" /> | <img width="1080" height="2400" alt="Screenshot_20260613_170612" src="https://github.com/user-attachments/assets/84a336d0-1219-4a2d-bb49-0e58e0c6e8d6" /> |
+
+---
+
+## Video Demo
+
+https://github.com/user-attachments/assets/745751b8-86ff-488d-b79a-5b85f80fd9ff
 
 ---
 
