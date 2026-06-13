@@ -251,10 +251,32 @@ fun AppNavigation(profileViewModel: ProfileViewModel, uiState: ProfileUiState) {
                 ) { backStackEntry ->
                     val url = backStackEntry.arguments?.getString("url") ?: ""
                     val decodedUrl = Screen.NewsDetail.decodeUrl(url)
-                    NewsDetailScreen(
-                        url = decodedUrl,
-                        onBack = { navController.popBackStack() }
-                    )
+                    
+                    val uiStateNews by newsViewModel.uiState.collectAsState()
+                    val article = (uiStateNews as? com.example.myprofileapp.viewmodel.NewsUiState.Success)
+                        ?.articles?.find { it.url == decodedUrl }
+                        
+                    if (article != null) {
+                        NewsDetailScreen(
+                            article = article,
+                            onBack = { navController.popBackStack() }
+                        )
+                    } else {
+                        // Fallback jika artikel tidak ditemukan di state
+                        NewsDetailScreen(
+                            article = com.example.myprofileapp.data.Article(
+                                title = "Artikel Tidak Ditemukan",
+                                url = decodedUrl,
+                                urlToImage = null,
+                                description = null,
+                                content = "Maaf, detail artikel tidak dapat dimuat.",
+                                author = null,
+                                publishedAt = null,
+                                source = null
+                            ),
+                            onBack = { navController.popBackStack() }
+                        )
+                    }
                 }
             }
         }

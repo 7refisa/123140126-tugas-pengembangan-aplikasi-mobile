@@ -20,10 +20,15 @@ import com.example.myprofileapp.data.Article
 // OR pass the encoded URL and just show it as text, since we don't have a WebView set up.
 // Actually, KMP navigation with complex objects can be done via ViewModel state (shared ViewModel).
 
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsDetailScreen(
-    url: String, // We use URL as ID
+    article: Article,
     onBack: () -> Unit
 ) {
     Scaffold(
@@ -37,26 +42,67 @@ fun NewsDetailScreen(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(16.dp)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            Text(
-                text = "Tautan Artikel:",
-                style = MaterialTheme.typography.titleMedium
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = url,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.primary
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = "Catatan: Di aplikasi sesungguhnya, area ini bisa memuat WebView atau detail artikel yang dikirim melalui state.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            article.urlToImage?.let { imageUrl ->
+                AsyncImage(
+                    model = imageUrl,
+                    contentDescription = article.title,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp),
+                    contentScale = ContentScale.Crop
+                )
+            }
+            
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = article.title ?: "Tanpa Judul",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                if (!article.author.isNullOrBlank() || !article.publishedAt.isNullOrBlank()) {
+                    Text(
+                        text = buildString {
+                            if (!article.author.isNullOrBlank()) append("Oleh ${article.author}")
+                            if (!article.author.isNullOrBlank() && !article.publishedAt.isNullOrBlank()) append(" • ")
+                            if (!article.publishedAt.isNullOrBlank()) {
+                                // Simple date formatting hack for ISO-8601 (e.g. 2022-04-21T09:49:33Z -> 2022-04-21)
+                                append(article.publishedAt.take(10)) 
+                            }
+                        },
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                Text(
+                    text = article.content ?: article.description ?: "Konten berita tidak tersedia.",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+                
+                Spacer(modifier = Modifier.height(24.dp))
+                
+                Text(
+                    text = "Tautan Asli:",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = article.url ?: "-",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         }
     }
 }
