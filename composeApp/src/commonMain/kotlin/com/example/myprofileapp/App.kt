@@ -271,8 +271,7 @@ fun AppNavigation(profileViewModel: ProfileViewModel, uiState: ProfileUiState) {
                                 description = null,
                                 content = "Maaf, detail artikel tidak dapat dimuat.",
                                 author = null,
-                                publishedAt = null,
-                                source = null
+                                publishedAt = null
                             ),
                             onBack = { navController.popBackStack() }
                         )
