@@ -9,12 +9,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.myprofileapp.components.NotesTopBar
-import com.example.myprofileapp.data.NoteRepository
+import com.example.myprofileapp.viewmodel.NotesViewModel
 
 // ── ADD NOTE ─────────────────────────────────────────────────────────────────
 
 @Composable
-fun AddNoteScreen(onBack: () -> Unit) {
+fun AddNoteScreen(
+    viewModel: NotesViewModel,
+    onBack: () -> Unit
+) {
     var title   by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
 
@@ -52,7 +55,7 @@ fun AddNoteScreen(onBack: () -> Unit) {
             Button(
                 onClick = {
                     if (title.isNotBlank()) {
-                        NoteRepository.addNote(title.trim(), content.trim()) // ← simpan!
+                        viewModel.addNote(title.trim(), content.trim())
                         onBack()
                     }
                 },
@@ -77,16 +80,31 @@ fun AddNoteScreen(onBack: () -> Unit) {
 
 @Composable
 fun EditNoteScreen(
-    noteId: Int,
+    noteId: Long,
+    viewModel: NotesViewModel,
     onBack: () -> Unit
 ) {
-    val existing = NoteRepository.findById(noteId)
+    LaunchedEffect(noteId) {
+        viewModel.selectNote(noteId)
+    }
 
-    var title   by remember { mutableStateOf(existing?.title   ?: "") }
-    var content by remember { mutableStateOf(existing?.content ?: "") }
+    val existing by viewModel.selectedNote.collectAsState()
+
+    var title   by remember { mutableStateOf("") }
+    var content by remember { mutableStateOf("") }
+
+    LaunchedEffect(existing) {
+        if (existing != null) {
+            title = existing!!.title
+            content = existing!!.content
+        }
+    }
 
     Scaffold(
-        topBar = { NotesTopBar(title = "Edit Catatan", onBack = onBack) }
+        topBar = { NotesTopBar(title = "Edit Catatan", onBack = {
+            viewModel.clearSelectedNote()
+            onBack()
+        }) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -117,7 +135,8 @@ fun EditNoteScreen(
             Button(
                 onClick = {
                     if (title.isNotBlank()) {
-                        NoteRepository.updateNote(noteId, title.trim(), content.trim()) // ← update!
+                        viewModel.updateNote(noteId, title.trim(), content.trim())
+                        viewModel.clearSelectedNote()
                         onBack()
                     }
                 },
@@ -131,7 +150,10 @@ fun EditNoteScreen(
                 )
             }
 
-            OutlinedButton(onClick = onBack, modifier = Modifier.fillMaxWidth()) {
+            OutlinedButton(onClick = {
+                viewModel.clearSelectedNote()
+                onBack()
+            }, modifier = Modifier.fillMaxWidth()) {
                 Text("Batal")
             }
         }

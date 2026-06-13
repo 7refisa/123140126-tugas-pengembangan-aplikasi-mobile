@@ -8,6 +8,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -15,27 +18,37 @@ import androidx.compose.ui.unit.dp
 import com.example.myprofileapp.components.EditActionButton
 import com.example.myprofileapp.components.FavoriteActionButton
 import com.example.myprofileapp.components.NotesTopBar
-import com.example.myprofileapp.data.NoteRepository
+import com.example.myprofileapp.viewmodel.NotesViewModel
 
 @Composable
 fun NoteDetailScreen(
-    noteId: Int,
+    noteId: Long,
+    viewModel: NotesViewModel,
     onBack: () -> Unit,
-    onEditClick: (Int) -> Unit
+    onEditClick: (Long) -> Unit
 ) {
-    // Baca langsung dari repository — otomatis update saat toggle favorit
-    val note = NoteRepository.findById(noteId)
+    LaunchedEffect(noteId) {
+        viewModel.selectNote(noteId)
+    }
+
+    val note by viewModel.selectedNote.collectAsState()
 
     Scaffold(
         topBar = {
             NotesTopBar(
                 title  = "Detail Catatan",
-                onBack = onBack,
+                onBack = {
+                    viewModel.clearSelectedNote()
+                    onBack()
+                },
                 actions = {
                     // Tombol toggle favorit di TopAppBar
                     FavoriteActionButton(
                         isFavorite = note?.isFavorite ?: false,
-                        onClick    = { NoteRepository.toggleFavorite(noteId) }
+                        onClick    = {
+                            viewModel.toggleFavorite(noteId)
+                            viewModel.selectNote(noteId) // Refresh selected note
+                        }
                     )
                     // Tombol edit
                     EditActionButton(onClick = { onEditClick(noteId) })
@@ -52,13 +65,18 @@ fun NoteDetailScreen(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text("⚠️", style = MaterialTheme.typography.displayMedium)
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("Catatan tidak ditemukan.", color = MaterialTheme.colorScheme.error)
+                    Text("Memuat catatan...", color = MaterialTheme.colorScheme.outline)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Button(onClick = onBack) { Text("Kembali") }
+                    Button(onClick = {
+                        viewModel.clearSelectedNote()
+                        onBack()
+                    }) { Text("Kembali") }
                 }
             }
             return@Scaffold
         }
+
+        val currentNote = note!!
 
         Column(
             modifier = Modifier
@@ -69,31 +87,31 @@ fun NoteDetailScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text       = note.title,
+                text       = currentNote.title,
                 style      = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
-                    imageVector = if (note.isFavorite) Icons.Default.Favorite
+                    imageVector = if (currentNote.isFavorite) Icons.Default.Favorite
                     else Icons.Default.FavoriteBorder,
                     contentDescription = null,
-                    tint               = if (note.isFavorite) MaterialTheme.colorScheme.primary
+                    tint               = if (currentNote.isFavorite) MaterialTheme.colorScheme.primary
                     else MaterialTheme.colorScheme.outline,
                     modifier           = Modifier.size(16.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text  = if (note.isFavorite) "Favorit" else "Bukan Favorit",
+                    text  = if (currentNote.isFavorite) "Favorit" else "Bukan Favorit",
                     style = MaterialTheme.typography.labelMedium,
-                    color = if (note.isFavorite) MaterialTheme.colorScheme.primary
+                    color = if (currentNote.isFavorite) MaterialTheme.colorScheme.primary
                     else MaterialTheme.colorScheme.outline
                 )
             }
 
             Text(
-                text  = "Dibuat: ${note.createdAt}",
+                text  = "Dibuat: ${currentNote.createdAt}",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.outline
             )
@@ -101,7 +119,7 @@ fun NoteDetailScreen(
             HorizontalDivider()
 
             Text(
-                text  = note.content,
+                text  = currentNote.content,
                 style = MaterialTheme.typography.bodyLarge
             )
         }

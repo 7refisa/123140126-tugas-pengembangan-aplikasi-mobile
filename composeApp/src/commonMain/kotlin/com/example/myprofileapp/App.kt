@@ -28,7 +28,13 @@ import com.example.myprofileapp.screens.NewsListScreen
 import com.example.myprofileapp.screens.NewsDetailScreen
 import com.example.myprofileapp.viewmodel.ProfileViewModel
 import com.example.myprofileapp.viewmodel.NewsViewModel
+import com.example.myprofileapp.viewmodel.NotesViewModel
 import com.example.myprofileapp.data.ProfileUiState
+import com.example.myprofileapp.data.NoteRepository
+import com.example.myprofileapp.db.NotesDatabase
+import com.example.myprofileapp.local.DatabaseDriverFactory
+import com.example.myprofileapp.local.SettingsFactory
+import com.example.myprofileapp.local.SettingsManager
 import kotlinx.coroutines.launch
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -64,12 +70,18 @@ val CreamDarkColorScheme = darkColorScheme(
 )
 
 @Composable
-fun App() {
-    val profileViewModel = remember { ProfileViewModel() }
+fun App(
+    databaseDriverFactory: DatabaseDriverFactory,
+    settingsFactory: SettingsFactory
+) {
+    val settingsManager = remember { SettingsManager(settingsFactory.createSettings()) }
+    val noteRepository = remember { NoteRepository(NotesDatabase(databaseDriverFactory.createDriver())) }
+    val profileViewModel = remember { ProfileViewModel(settingsManager) }
+    val notesViewModel = remember { NotesViewModel(noteRepository, settingsManager) }
     val uiState by profileViewModel.uiState.collectAsState()
 
     MaterialTheme(colorScheme = if (uiState.isDarkMode) CreamDarkColorScheme else CreamColorScheme) {
-        AppNavigation(profileViewModel, uiState)
+        AppNavigation(profileViewModel, notesViewModel, uiState)
     }
 }
 
@@ -77,7 +89,11 @@ fun App() {
  * Root navigation composable with ModalNavigationDrawer.
  */
 @Composable
-fun AppNavigation(profileViewModel: ProfileViewModel, uiState: ProfileUiState) {
+fun AppNavigation(
+    profileViewModel: ProfileViewModel,
+    notesViewModel: NotesViewModel,
+    uiState: ProfileUiState
+) {
     val newsViewModel = remember { NewsViewModel() }
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -144,6 +160,7 @@ fun AppNavigation(profileViewModel: ProfileViewModel, uiState: ProfileUiState) {
                 // ================================================================
                 composable(route = Screen.NoteList.route) {
                     NoteListScreen(
+                        viewModel = notesViewModel,
                         onNoteClick = { noteId -> navController.navigate(Screen.NoteDetail.createRoute(noteId)) },
                         onAddClick = { navController.navigate(Screen.AddNote.route) },
                         onMenuClick = { scope.launch { drawerState.open() } },
@@ -157,6 +174,7 @@ fun AppNavigation(profileViewModel: ProfileViewModel, uiState: ProfileUiState) {
                 // ================================================================
                 composable(route = Screen.Favorites.route) {
                     FavoritesScreen(
+                        viewModel = notesViewModel,
                         onNoteClick = { noteId -> navController.navigate(Screen.NoteDetail.createRoute(noteId)) },
                         onMenuClick = { scope.launch { drawerState.open() } },
                         isDarkMode = uiState.isDarkMode,
@@ -170,6 +188,7 @@ fun AppNavigation(profileViewModel: ProfileViewModel, uiState: ProfileUiState) {
                 composable(route = Screen.Profile.route) {
                     ProfileScreen(
                         uiState = uiState,
+                        notesViewModel = notesViewModel,
                         onEditClick = { navController.navigate(Screen.EditProfile.route) },
                         onToggleDark = { profileViewModel.toggleDarkMode() },
                         onSaveContact = { field, value -> profileViewModel.updateContactField(field, value) },
@@ -196,6 +215,7 @@ fun AppNavigation(profileViewModel: ProfileViewModel, uiState: ProfileUiState) {
                 // ================================================================
                 composable(route = Screen.AddNote.route) {
                     AddNoteScreen(
+                        viewModel = notesViewModel,
                         onBack = { navController.popBackStack() }
                     )
                 }
@@ -205,11 +225,12 @@ fun AppNavigation(profileViewModel: ProfileViewModel, uiState: ProfileUiState) {
                 // ================================================================
                 composable(
                     route     = Screen.NoteDetail.route,
-                    arguments = listOf(navArgument("noteId") { type = NavType.IntType })
+                    arguments = listOf(navArgument("noteId") { type = NavType.LongType })
                 ) { backStackEntry ->
-                    val noteId = backStackEntry.arguments?.getInt("noteId") ?: 0
+                    val noteId = backStackEntry.arguments?.getLong("noteId") ?: 0L
                     NoteDetailScreen(
                         noteId      = noteId,
+                        viewModel   = notesViewModel,
                         onBack      = { navController.popBackStack() },
                         onEditClick = { id -> navController.navigate(Screen.EditNote.createRoute(id)) }
                     )
@@ -220,11 +241,12 @@ fun AppNavigation(profileViewModel: ProfileViewModel, uiState: ProfileUiState) {
                 // ================================================================
                 composable(
                     route     = Screen.EditNote.route,
-                    arguments = listOf(navArgument("noteId") { type = NavType.IntType })
+                    arguments = listOf(navArgument("noteId") { type = NavType.LongType })
                 ) { backStackEntry ->
-                    val noteId = backStackEntry.arguments?.getInt("noteId") ?: 0
+                    val noteId = backStackEntry.arguments?.getLong("noteId") ?: 0L
                     EditNoteScreen(
                         noteId = noteId,
+                        viewModel = notesViewModel,
                         onBack = { navController.popBackStack() }
                     )
                 }

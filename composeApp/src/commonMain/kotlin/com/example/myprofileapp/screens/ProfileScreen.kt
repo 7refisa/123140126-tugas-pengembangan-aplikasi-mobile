@@ -26,8 +26,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myprofileapp.components.NotesTopBar
-import com.example.myprofileapp.data.NoteRepository
 import com.example.myprofileapp.data.ProfileUiState
+import com.example.myprofileapp.viewmodel.NotesViewModel
 import myprofileapp.composeapp.generated.resources.Res
 import myprofileapp.composeapp.generated.resources.profile_refi
 import org.jetbrains.compose.resources.painterResource
@@ -44,6 +44,7 @@ val IconGreen = Color(0xFFAED581)
 @Composable
 fun ProfileScreen(
     uiState      : ProfileUiState,
+    notesViewModel: NotesViewModel,
     onEditClick  : () -> Unit,
     onToggleDark : () -> Unit,
     onSaveContact: (String, String) -> Unit,
@@ -51,8 +52,9 @@ fun ProfileScreen(
 ) {
     var editContactDialog by remember { mutableStateOf<Pair<String, String>?>(null) }
     
-    val totalNotes    = NoteRepository.notes.size
-    val totalFavorites = NoteRepository.favoriteNotes.size
+    val notes by notesViewModel.notes.collectAsState()
+    val totalNotes    = notes.size
+    val totalFavorites = notes.count { it.isFavorite }
 
     Scaffold(
         topBar = {

@@ -38,7 +38,7 @@ sealed class Screen(val route: String) {
          * Helper function untuk membuat route dengan nilai noteId yang
          * sesungguhnya, contoh: createRoute(5) → "note_detail/5"
          */
-        fun createRoute(noteId: Int): String = "note_detail/$noteId"
+        fun createRoute(noteId: Long): String = "note_detail/$noteId"
     }
 
     /**
@@ -72,6 +72,6 @@ sealed class Screen(val route: String) {
      */
     object EditNote : Screen("edit_note/{noteId}") {
         /** Helper function: createRoute(5) → "edit_note/5" */
-        fun createRoute(noteId: Int): String = "edit_note/$noteId"
+        fun createRoute(noteId: Long): String = "edit_note/$noteId"
     }
 }

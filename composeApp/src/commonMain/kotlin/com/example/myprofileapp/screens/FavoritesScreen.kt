@@ -5,21 +5,24 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.myprofileapp.components.EmptyState
 import com.example.myprofileapp.components.NoteCard
 import com.example.myprofileapp.components.NotesTopBar
-import com.example.myprofileapp.data.NoteRepository
+import com.example.myprofileapp.viewmodel.NotesViewModel
 
 @Composable
 fun FavoritesScreen(
-    onNoteClick: (Int) -> Unit,
+    viewModel: NotesViewModel,
+    onNoteClick: (Long) -> Unit,
     onMenuClick: () -> Unit = {},
     isDarkMode: Boolean,
     onToggleDark: () -> Unit
 ) {
-    val favorites = NoteRepository.favoriteNotes.toList()
+    val favorites by viewModel.favoriteNotes.collectAsState()
 
     Scaffold(
         topBar = { 
@@ -49,7 +52,7 @@ fun FavoritesScreen(
                     NoteCard(
                         note             = note,
                         onClick          = { onNoteClick(note.id) },
-                        onToggleFavorite = { NoteRepository.toggleFavorite(note.id) }
+                        onToggleFavorite = { viewModel.toggleFavorite(note.id) }
                     )
                 }
             }

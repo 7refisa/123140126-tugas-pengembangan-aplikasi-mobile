@@ -8,6 +8,8 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "MyProfileApp",
     ) {
-        App()
+        val driverFactory = com.example.myprofileapp.local.DatabaseDriverFactory()
+        val settingsFactory = com.example.myprofileapp.local.SettingsFactory()
+        App(driverFactory, settingsFactory)
     }
 }

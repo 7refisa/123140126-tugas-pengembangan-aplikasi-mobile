@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.myprofileapp.local.DatabaseDriverFactory
+import com.example.myprofileapp.local.SettingsFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,7 +15,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            App()
+            val driverFactory = DatabaseDriverFactory(applicationContext)
+            val settingsFactory = SettingsFactory(applicationContext)
+            App(driverFactory, settingsFactory)
         }
     }
 }
@@ -21,5 +25,7 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun AppAndroidPreview() {
-    App()
+    // Preview might not work fully with Context dependent factories
+    // but we can pass null or dummy if we had a way, for now omit preview or pass dummy
+    // Since we don't have context here, just leave empty or use a dummy implementation
 }
