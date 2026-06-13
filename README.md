@@ -1,5 +1,9 @@
 # Tugas Minggu 6 — Networking & REST API
 
+| Nama | NIM |
+| --- | --- |
+| Refi Ikhsanti | 123140126 |
+
 **Mata Kuliah:** IF25-22017 Pengembangan Aplikasi Mobile  
 **Program Studi:** Teknik Informatika — Institut Teknologi Sumatera  
 **Tahun Akademik:** Genap 2025/2026
