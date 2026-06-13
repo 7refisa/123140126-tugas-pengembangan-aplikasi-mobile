@@ -1,4 +1,8 @@
-# Tugas Praktikum Minggu 7 — Local Data Storage
+# Tugas Minggu 7 — Local Data Storage
+
+| Nama | NIM |
+| --- | --- |
+| Refi Ikhsanti | 123140126 |
 
 **Mata Kuliah:** IF25-22017 Pengembangan Aplikasi Mobile  
 **Program Studi:** Teknik Informatika — Institut Teknologi Sumatera  
@@ -12,7 +16,7 @@ Aplikasi **Notes App & News Reader** berbasis Compose Multiplatform. Dikembangka
 
 ---
 
-## Fitur yang Diimplementasikan (Week 7)
+## Fitur yang Diimplementasikan
 
 - **SQLDelight Database:** Data catatan (Notes) sekarang disimpan secara persisten menggunakan SQLDelight.
 - **Offline-First Architecture:** Aplikasi memprioritaskan data dari database lokal, memungkinkan fitur penuh Notes meskipun tidak ada koneksi internet.
@@ -24,7 +28,7 @@ Aplikasi **Notes App & News Reader** berbasis Compose Multiplatform. Dikembangka
 
 ---
 
-## Struktur Folder Terkini (Fokus Week 7)
+## Struktur Folder
 
 ```
 commonMain/kotlin/com/example/myprofileapp/
@@ -66,6 +70,24 @@ Aplikasi ini menggunakan pola `MVVM` untuk integrasi penyimpanan:
 | Tanggal & Waktu | `org.jetbrains.kotlinx:kotlinx-datetime` |
 | Networking | `io.ktor:ktor-client-core` & Serialization |
 | Image Loader | `io.coil-kt.coil3:coil-compose` |
+
+---
+
+## Screenshoots
+
+| Create Notes | Shorting | Searching | Detail Catatan |
+| --- | --- | --- | --- |
+| <img width="1080" height="2400" alt="Screenshot_20260614_004222" src="https://github.com/user-attachments/assets/f89a64b8-5def-45aa-a6ce-3cc0fa0a4f19" /> | <img width="1080" height="2400" alt="Screenshot_20260614_004302" src="https://github.com/user-attachments/assets/abb1f9c8-6ba3-44d9-8cfc-7f001e35112a" /> | <img width="1080" height="2400" alt="Screenshot_20260614_004505" src="https://github.com/user-attachments/assets/19aae4e4-09aa-4c6d-9325-05942889863c" /> | <img width="1080" height="2400" alt="Screenshot_20260614_004324" src="https://github.com/user-attachments/assets/5bc227d4-198b-440f-897c-caed0960cbff" /> |
+
+| Edit Catatan | Hapus Catatan | Favorite | 
+| --- | --- | --- |
+| <img width="1080" height="2400" alt="Screenshot_20260614_004341" src="https://github.com/user-attachments/assets/14fd3a8c-6d69-4c68-90e9-95c908345ff5" /> | <img width="1080" height="2400" alt="Screenshot_20260614_004415" src="https://github.com/user-attachments/assets/0f112ab5-07ff-41e8-8140-29ae944abdf5" /> | <img width="1080" height="2400" alt="Screenshot_20260614_004527" src="https://github.com/user-attachments/assets/62ec974d-6a3c-4277-ba3c-a2229370ffbc" /> |
+
+---
+
+## Video Demo
+
+https://github.com/user-attachments/assets/a17f1ba2-c9a2-4ecf-8a4f-595ec8ce2413
 
 ---
 
