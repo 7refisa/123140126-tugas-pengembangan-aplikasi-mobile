@@ -16,6 +16,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.animation.core.*
+import androidx.compose.ui.draw.alpha
+import androidx.compose.foundation.background
+import androidx.compose.ui.graphics.Color
 import coil3.compose.AsyncImage
 import com.example.myprofileapp.components.NotesTopBar
 import com.example.myprofileapp.data.Article
@@ -56,7 +60,15 @@ fun NewsListScreen(
         ) {
             when (uiState) {
                 is NewsUiState.Loading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    LazyColumn(
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(5) { // Show 5 skeleton cards
+                            NewsCardSkeleton()
+                        }
+                    }
                 }
                 is NewsUiState.Success -> {
                     val articles = (uiState as NewsUiState.Success).articles
@@ -137,6 +149,63 @@ fun NewsCard(article: Article, onArticleClick: (String) -> Unit) {
                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun NewsCardSkeleton() {
+    val infiniteTransition = rememberInfiniteTransition()
+    val alpha by infiniteTransition.animateFloat(
+        initialValue = 0.3f,
+        targetValue = 0.7f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(800, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+
+    Card(
+        modifier = Modifier.fillMaxWidth().alpha(alpha),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp)
+                    .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
+                    .background(Color.Gray.copy(alpha = 0.3f))
+            )
+            Column(modifier = Modifier.padding(16.dp)) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .height(24.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(Color.Gray.copy(alpha = 0.3f))
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(16.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(Color.Gray.copy(alpha = 0.3f))
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.6f)
+                        .height(16.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(Color.Gray.copy(alpha = 0.3f))
                 )
             }
         }
