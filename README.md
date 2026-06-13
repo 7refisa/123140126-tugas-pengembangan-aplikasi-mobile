@@ -1,4 +1,4 @@
-# Tugas Praktikum Minggu 7 — Local Data Storage
+# Tugas Praktikum Minggu 8 — Platform-Specific Features
 
 **Mata Kuliah:** IF25-22017 Pengembangan Aplikasi Mobile  
 **Program Studi:** Teknik Informatika — Institut Teknologi Sumatera  
@@ -8,51 +8,53 @@
 
 ## Deskripsi
 
-Aplikasi **Notes App & News Reader** berbasis Compose Multiplatform. Dikembangkan dari tugas minggu sebelumnya (Minggu 6: Networking & REST API) dengan menambahkan fungsionalitas penyimpanan data lokal (*Local Data Storage*). Aplikasi ini kini mengimplementasikan arsitektur *Offline-First*, menggunakan SQLDelight untuk penyimpanan struktur relasional (catatan) dan Multiplatform Settings (DataStore) untuk key-value preferences (pengaturan tema dan sortir).
+Aplikasi **Notes App & News Reader** berbasis Compose Multiplatform. Dikembangkan dari tugas minggu sebelumnya dengan menambahkan fungsionalitas fitur spesifik platform (*Platform-Specific Features*). Aplikasi ini kini mengimplementasikan **Dependency Injection** menggunakan Koin dan menggunakan mekanisme `expect/actual` dari Kotlin Multiplatform untuk mengakses API native tiap platform seperti informasi perangkat dan status jaringan.
 
 ---
 
-## Fitur yang Diimplementasikan (Week 7)
+## Fitur yang Diimplementasikan (Week 8)
 
-- **SQLDelight Database:** Data catatan (Notes) sekarang disimpan secara persisten menggunakan SQLDelight.
-- **Offline-First Architecture:** Aplikasi memprioritaskan data dari database lokal, memungkinkan fitur penuh Notes meskipun tidak ada koneksi internet.
-- **Multiplatform Settings:** Menyimpan preferensi pengguna seperti Dark Mode dan preferensi pengurutan (Sort Order) agar tidak hilang saat aplikasi ditutup.
-- **Fitur Search:** Menambahkan bilah pencarian pada halaman list catatan yang secara reaktif melakukan filter query via *StateFlow*.
-- **Fitur Sort:** Pengguna dapat mengurutkan catatan berdasarkan "Terbaru" atau "Terlama".
-- **Fitur Delete:** Ditambahkan popup konfirmasi sebelum menghapus catatan secara permanen dari database.
-- Mempertahankan seluruh fungsionalitas dari tugas sebelumnya termasuk pengambilan data berita via *Networking*.
+- **Dependency Injection (Koin):** Seluruh dependensi (DatabaseDriver, Settings, ViewModel, Repository) kini diinjeksi menggunakan Koin secara global.
+- **DeviceInfo (expect/actual):** Menampilkan nama model perangkat, versi OS, dan versi aplikasi secara dinamis dari API native tiap platform.
+- **NetworkMonitor (expect/actual):** Mendeteksi koneksi internet secara *real-time* dan menampilkan indikator merah (No Internet Connection) jika offline.
+- **BatteryInfo (Bonus):** Menampilkan sisa persentase baterai dan status *charging* di halaman Profil.
+- Mempertahankan fungsionalitas dari tugas sebelumnya (SQLDelight, Ktor, Settings).
 
 ---
 
-## Struktur Folder Terkini (Fokus Week 7)
+## Struktur Folder Terkini (Fokus Week 8)
 
 ```
-commonMain/kotlin/com/example/myprofileapp/
+composeApp/src/
 │
-├── local/
-│   ├── DatabaseDriverFactory.kt   # Expect class untuk Driver SQLDelight
-│   ├── SettingsFactory.kt         # Expect class untuk Multiplatform Settings
-│   └── SettingsManager.kt         # Mengatur DataStore Preferences (Dark Mode, Sort)
+├── commonMain/.../myprofileapp/
+│   ├── di/
+│   │   ├── AppModule.kt           # Koin module utama (factory, single)
+│   │   ├── KoinHelper.kt          # Fungsi initKoin
+│   │   └── PlatformModule.kt      # Expect function untuk platformModule
+│   ├── platform/
+│   │   ├── DeviceInfo.kt          # Expect class
+│   │   ├── NetworkMonitor.kt      # Expect class
+│   │   └── BatteryInfo.kt         # Expect class
 │
-├── sqldelight/
-│   └── com/example/myprofileapp/db/Note.sq # Definisi Skema Tabel dan Query SQL
+├── androidMain/.../myprofileapp/
+│   ├── MyApp.kt                   # Entry point inisialisasi Koin di Android
+│   ├── di/PlatformModule.android.kt # Actual module
+│   └── platform/                  # Actual implementation (Build.MODEL, ConnectivityManager, BatteryManager)
 │
-├── viewmodel/
-│   ├── NotesViewModel.kt          # Source of truth StateFlow untuk UI Notes (CRUD & Search)
-│   └── ProfileViewModel.kt        # Mengonsumsi SettingsManager untuk persistensi UI
-│
-└── data/
-    └── NoteRepository.kt          # Mengelola eksekusi query dari SQLDelight database
+├── iosMain/.../myprofileapp/
+│   ├── di/PlatformModule.ios.kt   # Actual module
+│   └── platform/                  # Actual implementation (UIDevice)
 ```
 
 ---
 
-## Arsitektur & Penyimpanan Lokal
+## Arsitektur & Injeksi Dependensi
 
-Aplikasi ini menggunakan pola `MVVM` untuk integrasi penyimpanan:
-1. `SQLDelight` menyediakan driver platform-spesifik (`AndroidSqliteDriver`, `NativeSqliteDriver`) dan diinjeksi ke level aplikasi.
-2. `NoteRepository` menjembatani ViewModel dengan *Generated Database Queries*.
-3. `NotesViewModel` mengubah database event (Flow) menjadi `StateFlow` dan menangani *Search* serta *Sort* secara *Asynchronous*.
+Aplikasi ini menggunakan pola **Dependency Injection (DI)** menggunakan **Koin**:
+1. `KoinContext` digunakan di `App.kt` dan modul diinisialisasi melalui `startKoin` di *entry point* masing-masing platform.
+2. `koinInject<T>()` digunakan pada *Composable* untuk mendapatkan instance dari `ViewModel` atau *Platform APIs* seperti `DeviceInfo`.
+3. Fungsi spesifik platform memanfaatkan API bawaan (`Context` di Android, `UIDevice` di iOS) dan dikelola via *Koin Component*.
 
 ---
 
@@ -61,11 +63,10 @@ Aplikasi ini menggunakan pola `MVVM` untuk integrasi penyimpanan:
 | Komponen | Library |
 |----------|---------|
 | UI Framework | Compose Multiplatform |
-| Local Relational DB | `app.cash.sqldelight:android-driver / native-driver` |
-| Local Preferences | `com.russhwolf:multiplatform-settings-coroutines` |
-| Tanggal & Waktu | `org.jetbrains.kotlinx:kotlinx-datetime` |
-| Networking | `io.ktor:ktor-client-core` & Serialization |
-| Image Loader | `io.coil-kt.coil3:coil-compose` |
+| Dependency Injection | `io.insert-koin:koin-core`, `koin-compose` |
+| Local Relational DB | `app.cash.sqldelight` |
+| Local Preferences | `com.russhwolf:multiplatform-settings` |
+| Networking | `io.ktor:ktor-client-core` |
 
 ---
 
