@@ -94,13 +94,17 @@ fun NewsListScreen(
 }
 
 @Composable
-fun NewsCard(article: Article, onClick: () -> Unit) {
+fun NewsCard(article: Article, onArticleClick: (String) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+            .clickable { onArticleClick(article.url ?: "") },
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column {
             article.urlToImage?.let { imageUrl ->
@@ -109,25 +113,27 @@ fun NewsCard(article: Article, onClick: () -> Unit) {
                     contentDescription = article.title,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(180.dp),
-                    contentScale = androidx.compose.ui.layout.ContentScale.Crop
+                        .height(180.dp)
+                        .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)),
+                    contentScale = ContentScale.Crop
                 )
             }
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = article.title ?: "Tanpa Judul",
                     style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = article.description ?: "Tidak ada deskripsi",
+                    text = article.description ?: "Tidak ada deskripsi.",
                     style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
                     maxLines = 3,
-                    overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }
