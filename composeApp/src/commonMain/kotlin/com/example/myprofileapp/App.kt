@@ -24,7 +24,10 @@ import com.example.myprofileapp.screens.NoteDetailScreen
 import com.example.myprofileapp.screens.NoteListScreen
 import com.example.myprofileapp.screens.ProfileScreen
 import com.example.myprofileapp.screens.EditProfileScreen
+import com.example.myprofileapp.screens.NewsListScreen
+import com.example.myprofileapp.screens.NewsDetailScreen
 import com.example.myprofileapp.viewmodel.ProfileViewModel
+import com.example.myprofileapp.viewmodel.NewsViewModel
 import com.example.myprofileapp.data.ProfileUiState
 import kotlinx.coroutines.launch
 
@@ -75,6 +78,7 @@ fun App() {
  */
 @Composable
 fun AppNavigation(profileViewModel: ProfileViewModel, uiState: ProfileUiState) {
+    val newsViewModel = remember { NewsViewModel() }
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -221,6 +225,34 @@ fun AppNavigation(profileViewModel: ProfileViewModel, uiState: ProfileUiState) {
                     val noteId = backStackEntry.arguments?.getInt("noteId") ?: 0
                     EditNoteScreen(
                         noteId = noteId,
+                        onBack = { navController.popBackStack() }
+                    )
+                }
+
+                // ================================================================
+                // TAB 4 — News
+                // ================================================================
+                composable(route = Screen.NewsList.route) {
+                    NewsListScreen(
+                        viewModel = newsViewModel,
+                        onArticleClick = { url -> navController.navigate(Screen.NewsDetail.createRoute(url)) },
+                        onMenuClick = { scope.launch { drawerState.open() } },
+                        isDarkMode = uiState.isDarkMode,
+                        onToggleDark = { profileViewModel.toggleDarkMode() }
+                    )
+                }
+
+                // ================================================================
+                // NEWS DETAIL
+                // ================================================================
+                composable(
+                    route = Screen.NewsDetail.route,
+                    arguments = listOf(navArgument("url") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    val url = backStackEntry.arguments?.getString("url") ?: ""
+                    val decodedUrl = Screen.NewsDetail.decodeUrl(url)
+                    NewsDetailScreen(
+                        url = decodedUrl,
                         onBack = { navController.popBackStack() }
                     )
                 }

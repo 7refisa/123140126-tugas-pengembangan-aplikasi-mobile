@@ -42,6 +42,30 @@ sealed class Screen(val route: String) {
     }
 
     /**
+     * Screen daftar berita (News Reader)
+     */
+    object NewsList : Screen("news_list")
+
+    /**
+     * Screen detail berita.
+     * Route pattern: "news_detail/{url}"
+     */
+    object NewsDetail : Screen("news_detail/{url}") {
+        fun createRoute(url: String): String {
+            // Encode url if needed, for simplicity we assume url is safely encoded or base64 
+            // In a real app we'd use Base64 or URLEncoder. Since KMP doesn't have URLEncoder easily,
+            // we will replace slashes with something else, or use safe base64.
+            // For now, let's just pass the string. It might break Navigation if it has slashes.
+            // A simple hack: replace '/' with '|'
+            val safeUrl = url.replace("/", "|").replace("?", "~")
+            return "news_detail/$safeUrl"
+        }
+        fun decodeUrl(safeUrl: String): String {
+            return safeUrl.replace("|", "/").replace("~", "?")
+        }
+    }
+
+    /**
      * Screen edit catatan.
      * Route pattern: "edit_note/{noteId}"
      * - {noteId} adalah Required Argument bertipe Int.

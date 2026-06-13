@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.List
 import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
@@ -37,11 +38,17 @@ sealed class BottomNavItem(
         label = "Profile"
     )
 
+    object News : BottomNavItem(
+        route = Screen.NewsList.route,
+        icon  = Icons.Default.List,
+        label = "News"
+    )
+
     companion object {
         /**
          * Daftar tab yang ditampilkan di NavigationBar, sesuai urutan tampilan.
          */
-        val items: List<BottomNavItem> = listOf(Notes, Favorites, Profile)
+        val items: List<BottomNavItem> = listOf(Notes, Favorites, Profile, News)
 
         /**
          * Kumpulan route milik bottom-nav tabs.
