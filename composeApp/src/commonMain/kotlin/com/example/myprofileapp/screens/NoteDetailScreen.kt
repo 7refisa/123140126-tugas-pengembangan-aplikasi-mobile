@@ -1,6 +1,7 @@
 package com.example.myprofileapp.screens
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.foundation.layout.*
@@ -11,6 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -33,6 +37,8 @@ fun NoteDetailScreen(
 
     val note by viewModel.selectedNote.collectAsState()
 
+    var showDeleteConfirm by remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             NotesTopBar(
@@ -42,6 +48,10 @@ fun NoteDetailScreen(
                     onBack()
                 },
                 actions = {
+                    // Tombol delete
+                    IconButton(onClick = { showDeleteConfirm = true }) {
+                        Icon(androidx.compose.material.icons.Icons.Default.Delete, contentDescription = "Hapus", tint = MaterialTheme.colorScheme.error)
+                    }
                     // Tombol toggle favorit di TopAppBar
                     FavoriteActionButton(
                         isFavorite = note?.isFavorite ?: false,
@@ -123,5 +133,28 @@ fun NoteDetailScreen(
                 style = MaterialTheme.typography.bodyLarge
             )
         }
+    }
+
+    if (showDeleteConfirm) {
+        AlertDialog(
+            onDismissRequest = { showDeleteConfirm = false },
+            title = { Text("Hapus Catatan") },
+            text = { Text("Apakah kamu yakin ingin menghapus catatan ini?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    viewModel.deleteNote(noteId)
+                    showDeleteConfirm = false
+                    viewModel.clearSelectedNote()
+                    onBack()
+                }) {
+                    Text("Hapus", color = MaterialTheme.colorScheme.error)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteConfirm = false }) {
+                    Text("Batal")
+                }
+            }
+        )
     }
 }
