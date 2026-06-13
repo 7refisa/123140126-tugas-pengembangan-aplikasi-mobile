@@ -273,7 +273,7 @@ fun ProfileScreen(
             ) {
                 InfoRow(label = "Mata Kuliah", value = "Pengembangan Aplikasi Mobile", isDarkMode = uiState.isDarkMode)
                 HorizontalDivider(modifier = Modifier.padding(horizontal = 24.dp), color = LightText.copy(alpha = 0.2f))
-                InfoRow(label = "Pertemuan",   value = "5 — Navigasi Antar Layar", isDarkMode = uiState.isDarkMode)
+                InfoRow(label = "Pertemuan",   value = "7 — Local Data Storage", isDarkMode = uiState.isDarkMode)
                 HorizontalDivider(modifier = Modifier.padding(horizontal = 24.dp), color = LightText.copy(alpha = 0.2f))
                 InfoRow(label = "Framework",   value = "Compose Multiplatform", isDarkMode = uiState.isDarkMode)
                 HorizontalDivider(modifier = Modifier.padding(horizontal = 24.dp), color = LightText.copy(alpha = 0.2f))

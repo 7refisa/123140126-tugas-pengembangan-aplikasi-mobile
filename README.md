@@ -1,4 +1,4 @@
-# Tugas Praktikum Minggu 6 — Networking & REST API
+# Tugas Praktikum Minggu 7 — Local Data Storage
 
 **Mata Kuliah:** IF25-22017 Pengembangan Aplikasi Mobile  
 **Program Studi:** Teknik Informatika — Institut Teknologi Sumatera  
@@ -8,60 +8,51 @@
 
 ## Deskripsi
 
-Aplikasi **Notes App & News Reader** berbasis Compose Multiplatform. Dikembangkan dari tugas minggu sebelumnya (Minggu 5: Navigasi Antar Layar) dengan menambahkan fitur pengambilan data dari Internet (*networking*) melalui Ktor Client untuk memuat daftar berita terkini menggunakan REST API.
+Aplikasi **Notes App & News Reader** berbasis Compose Multiplatform. Dikembangkan dari tugas minggu sebelumnya (Minggu 6: Networking & REST API) dengan menambahkan fungsionalitas penyimpanan data lokal (*Local Data Storage*). Aplikasi ini kini mengimplementasikan arsitektur *Offline-First*, menggunakan SQLDelight untuk penyimpanan struktur relasional (catatan) dan Multiplatform Settings (DataStore) untuk key-value preferences (pengaturan tema dan sortir).
 
 ---
 
-## Fitur yang Diimplementasikan
+## Fitur yang Diimplementasikan (Week 7)
 
-- **Tab News Baru** di dalam Bottom Navigation.
-- **Fetch API Otomatis** saat halaman News dibuka.
-- **Pull-to-Refresh** untuk menyegarkan daftar berita dari server kapan saja.
-- **State Management (Loading, Success, Error)** untuk mempermudah UX saat data diambil dari internet atau saat koneksi terputus.
-- **Parsing JSON Otomatis** dengan *Kotlinx Serialization*.
-- **Memuat Gambar secara Asinkron** (*Lazy Image Loading*) dari link gambar (*urlToImage*) yang dikembalikan oleh API menggunakan `Coil3`.
-- **Detail Berita** menampilkan tautan atau placeholder artikel ketika diklik.
-- Mempertahankan seluruh fungsionalitas dari tugas sebelumnya (Note, Favorites, Profile, dan sinkronisasi Dark Mode lintas tab).
+- **SQLDelight Database:** Data catatan (Notes) sekarang disimpan secara persisten menggunakan SQLDelight.
+- **Offline-First Architecture:** Aplikasi memprioritaskan data dari database lokal, memungkinkan fitur penuh Notes meskipun tidak ada koneksi internet.
+- **Multiplatform Settings:** Menyimpan preferensi pengguna seperti Dark Mode dan preferensi pengurutan (Sort Order) agar tidak hilang saat aplikasi ditutup.
+- **Fitur Search:** Menambahkan bilah pencarian pada halaman list catatan yang secara reaktif melakukan filter query via *StateFlow*.
+- **Fitur Sort:** Pengguna dapat mengurutkan catatan berdasarkan "Terbaru" atau "Terlama".
+- **Fitur Delete:** Ditambahkan popup konfirmasi sebelum menghapus catatan secara permanen dari database.
+- Mempertahankan seluruh fungsionalitas dari tugas sebelumnya termasuk pengambilan data berita via *Networking*.
 
 ---
 
-## Struktur Folder Terkini (Fokus Week 6)
+## Struktur Folder Terkini (Fokus Week 7)
 
 ```
 commonMain/kotlin/com/example/myprofileapp/
 │
-├── navigation/
-│   ├── Screen.kt              # Tambahan object NewsList & NewsDetail
-│   └── BottomNavItem.kt       # Tambahan tab News
+├── local/
+│   ├── DatabaseDriverFactory.kt   # Expect class untuk Driver SQLDelight
+│   ├── SettingsFactory.kt         # Expect class untuk Multiplatform Settings
+│   └── SettingsManager.kt         # Mengatur DataStore Preferences (Dark Mode, Sort)
 │
-├── screens/
-│   ├── NewsListScreen.kt      # List berita + UI State (Loading/Error/Success) + Pull-to-Refresh
-│   ├── NewsDetailScreen.kt    # Menampilkan parameter detail (URL)
-│   └── ... (screen tugas 5 lainnya)
-│
-├── components/
-│   └── NoteComponents.kt      
-│
-├── data/
-│   ├── Article.kt             # Data class model @Serializable untuk response berita
-│   ├── NewsRepository.kt      # Mengelola Ktor HttpClient dan fetch ke REST API (mock API)
-│   └── ... (Note repo dari tugas 5)
+├── sqldelight/
+│   └── com/example/myprofileapp/db/Note.sq # Definisi Skema Tabel dan Query SQL
 │
 ├── viewmodel/
-│   ├── NewsViewModel.kt       # View model khusus News (Coroutine launch + StateFlow)
-│   └── ProfileViewModel.kt    
+│   ├── NotesViewModel.kt          # Source of truth StateFlow untuk UI Notes (CRUD & Search)
+│   └── ProfileViewModel.kt        # Mengonsumsi SettingsManager untuk persistensi UI
 │
-└── App.kt                     # Integrasi ViewModel & Composables ke Navigation
+└── data/
+    └── NoteRepository.kt          # Mengelola eksekusi query dari SQLDelight database
 ```
 
 ---
 
-## Arsitektur & Networking
+## Arsitektur & Penyimpanan Lokal
 
-Aplikasi ini menggunakan architecture `MVVM` yang dikombinasikan dengan `StateFlow`:
-1. `NewsRepository` memanggil REST API menggunakan `HttpClient.get()` dan me-return `Result<List<Article>>`.
-2. `NewsViewModel` mengatur mutasi UI state melalui *sealed class* `NewsUiState`.
-3. `NewsListScreen` me-listen via `collectAsState()` dan merender UI sesuai status terkini secara reaktif.
+Aplikasi ini menggunakan pola `MVVM` untuk integrasi penyimpanan:
+1. `SQLDelight` menyediakan driver platform-spesifik (`AndroidSqliteDriver`, `NativeSqliteDriver`) dan diinjeksi ke level aplikasi.
+2. `NoteRepository` menjembatani ViewModel dengan *Generated Database Queries*.
+3. `NotesViewModel` mengubah database event (Flow) menjadi `StateFlow` dan menangani *Search* serta *Sort* secara *Asynchronous*.
 
 ---
 
@@ -70,11 +61,11 @@ Aplikasi ini menggunakan architecture `MVVM` yang dikombinasikan dengan `StateFl
 | Komponen | Library |
 |----------|---------|
 | UI Framework | Compose Multiplatform |
-| Navigasi | `navigation-compose` |
-| Networking / HTTP Client | `io.ktor:ktor-client-core:2.3.7` (beserta engine OkHttp untuk Android) |
-| JSON Serialization | `io.ktor:ktor-serialization-kotlinx-json:2.3.7` |
-| Image Loader | `io.coil-kt.coil3:coil-compose:3.0.4` |
-| Asynchronous Processing | Kotlin Coroutines |
+| Local Relational DB | `app.cash.sqldelight:android-driver / native-driver` |
+| Local Preferences | `com.russhwolf:multiplatform-settings-coroutines` |
+| Tanggal & Waktu | `org.jetbrains.kotlinx:kotlinx-datetime` |
+| Networking | `io.ktor:ktor-client-core` & Serialization |
+| Image Loader | `io.coil-kt.coil3:coil-compose` |
 
 ---
 
@@ -82,6 +73,6 @@ Aplikasi ini menggunakan architecture `MVVM` yang dikombinasikan dengan `StateFl
 
 1. Clone repository ini.
 2. Buka dengan Android Studio Hedgehog atau lebih baru.
-3. Tunggu hingga proses *Sync Gradle* dan *Downloading Dependencies* selesai (mungkin akan membutuhkan waktu sedikit lebih lama karena penambahan library Ktor dan Coil).
-4. Jalankan aplikasi di emulator atau *device* Android dengan koneksi internet yang aktif.
-5. Akses tab **News** pada *Bottom Navigation* untuk melihat hasil *fetching* REST API!
+3. Tunggu hingga proses *Sync Gradle* dan *Downloading Dependencies* selesai (termasuk library SQLDelight).
+4. Jalankan aplikasi di emulator atau *device* Android.
+5. Coba buat, ubah, hapus catatan, serta ubah mode gelap. Matikan aplikasi dan buka lagi untuk melihat data yang bertahan secara lokal!
