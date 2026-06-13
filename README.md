@@ -1,4 +1,8 @@
-# Tugas Praktikum Minggu 5 — Navigasi Antar Layar
+# Tugas Minggu 5 — Navigasi Antar Layar
+
+| Nama | NIM |
+| --- | --- |
+| Refi Ikhsanti | 123140126 |
 
 **Mata Kuliah:** IF25-22017 Pengembangan Aplikasi Mobile  
 **Program Studi:** Teknik Informatika — Institut Teknologi Sumatera  
@@ -83,13 +87,13 @@ Bottom Navigation Tabs
 
 ## Screenshot
 
-| Tab Notes | Tambah Catatan | Tab Favorite |
+| Tab Notes | Tambah Catatan | Edit Catatan |
 |-----------|----------------|--------------|
-|<img width="1080" height="2280" alt="Screenshot_20260601_045740" src="https://github.com/user-attachments/assets/63316998-5405-415c-a4c1-18b43b84257a" />|<img width="1080" height="2280" alt="Screenshot_20260601_045906" src="https://github.com/user-attachments/assets/f6a1a16f-4d03-4328-86b4-94c822165844" />|<img width="1080" height="2280" alt="Screenshot_20260601_045936" src="https://github.com/user-attachments/assets/f2ff6b9d-1a19-4f00-96e0-ae6f96bc6817" />|
+| <img width="1080" height="2400" alt="Screenshot_20260613_144748" src="https://github.com/user-attachments/assets/31726896-cf9b-4897-af16-db3b0b6b9bb9" /> | <img width="1080" height="2400" alt="Screenshot_20260613_144835" src="https://github.com/user-attachments/assets/206de21c-8f2e-4131-8da5-f54dae0e4c04" /> | <img width="1080" height="2400" alt="Screenshot_20260613_144852" src="https://github.com/user-attachments/assets/a7a38f6e-4df6-4ba2-9aa5-75b7c21a013c" /> |
 
-| Tab Profile | Edit Catatan | Detail Catatan |
+| Detail Catatan | Tab Favorite | Tab Profile |
 |-------------|--------------|----------------|
-|<img width="1080" height="2280" alt="Screenshot_20260601_045949" src="https://github.com/user-attachments/assets/8341b187-93ef-4bd0-bdcf-046dc7390071" />|<img width="1080" height="2280" alt="Screenshot_20260601_050046" src="https://github.com/user-attachments/assets/18cad39f-2ef3-4511-a6b6-72d8ba5ebdd9" />|<img width="1080" height="2280" alt="Screenshot_20260601_050059" src="https://github.com/user-attachments/assets/197fe60e-a571-4b8c-a9ee-866e00de1ce5" />|
+| <img width="1080" height="2400" alt="Screenshot_20260613_144903" src="https://github.com/user-attachments/assets/3e399a87-a4e9-4470-aeb8-a416dceae9c5" /> | <img width="1080" height="2400" alt="Screenshot_20260613_144914" src="https://github.com/user-attachments/assets/4cc89d89-fce2-4d2b-9b33-09cdd9d75d54" /> | <img width="1080" height="2400" alt="Screenshot_20260613_144921" src="https://github.com/user-attachments/assets/e36ee625-3516-494a-ae61-737725bbe870" /> |
 
 ---
 
@@ -97,8 +101,7 @@ Bottom Navigation Tabs
 
 > Video demo: 
 
-https://github.com/user-attachments/assets/594f43d9-c425-4077-a6fb-0781fec09235
-
+https://github.com/user-attachments/assets/e40e7819-03d7-47b2-b50f-e61a355c29f6
 
 ---
 
