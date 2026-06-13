@@ -2,11 +2,12 @@ package com.example.myprofileapp
 
 import androidx.compose.ui.window.ComposeUIViewController
 
-import com.example.myprofileapp.local.DatabaseDriverFactory
-import com.example.myprofileapp.local.SettingsFactory
+import com.example.myprofileapp.di.initKoin
 
 fun MainViewController() = ComposeUIViewController { 
-    val driverFactory = DatabaseDriverFactory()
-    val settingsFactory = SettingsFactory()
-    App(driverFactory, settingsFactory) 
+    App() 
+}
+
+fun initKoinIos() {
+    initKoin()
 }

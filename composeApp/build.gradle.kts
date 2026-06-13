@@ -37,6 +37,8 @@ kotlin {
             implementation("io.ktor:ktor-client-android:2.3.7")
             implementation("io.ktor:ktor-client-okhttp:2.3.7")
             implementation(libs.sqldelight.android.driver)
+            implementation(libs.koin.android)
+            implementation(libs.koin.androidx.compose)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -61,6 +63,8 @@ kotlin {
             implementation(libs.multiplatformSettings)
             implementation(libs.multiplatformSettings.coroutines)
             implementation(libs.kotlinx.datetime)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

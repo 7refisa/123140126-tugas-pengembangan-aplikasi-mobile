@@ -3,13 +3,14 @@ package com.example.myprofileapp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 
+import com.example.myprofileapp.di.initKoin
+
 fun main() = application {
+    initKoin()
     Window(
         onCloseRequest = ::exitApplication,
         title = "MyProfileApp",
     ) {
-        val driverFactory = com.example.myprofileapp.local.DatabaseDriverFactory()
-        val settingsFactory = com.example.myprofileapp.local.SettingsFactory()
-        App(driverFactory, settingsFactory)
+        App()
     }
 }
