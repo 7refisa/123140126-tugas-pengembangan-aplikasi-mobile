@@ -12,6 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import coil3.compose.AsyncImage
 import com.example.myprofileapp.components.NotesTopBar
 import com.example.myprofileapp.data.Article
@@ -64,10 +68,7 @@ fun NewsListScreen(
                         items(articles) { article ->
                             NewsCard(
                                 article = article,
-                                onClick = {
-                                    // For simplicity, pass URL encoded or handle detail differently
-                                    article.url?.let { onArticleClick(it) }
-                                }
+                                onArticleClick = onArticleClick
                             )
                         }
                     }
@@ -80,7 +81,9 @@ fun NewsListScreen(
                         Text(
                             text = (uiState as NewsUiState.Error).message,
                             color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodyLarge
+                            style = MaterialTheme.typography.bodyLarge,
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                            modifier = Modifier.padding(horizontal = 32.dp)
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(onClick = { viewModel.fetchNews() }) {
