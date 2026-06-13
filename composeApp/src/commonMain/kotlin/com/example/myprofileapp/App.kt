@@ -5,6 +5,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -27,15 +28,13 @@ import com.example.myprofileapp.screens.EditProfileScreen
 import com.example.myprofileapp.screens.NewsListScreen
 import com.example.myprofileapp.screens.NewsDetailScreen
 import com.example.myprofileapp.viewmodel.ProfileViewModel
-import com.example.myprofileapp.viewmodel.NewsViewModel
 import com.example.myprofileapp.viewmodel.NotesViewModel
-import com.example.myprofileapp.data.ProfileUiState
-import com.example.myprofileapp.data.NoteRepository
-import com.example.myprofileapp.db.NotesDatabase
-import com.example.myprofileapp.local.DatabaseDriverFactory
-import com.example.myprofileapp.local.SettingsFactory
-import com.example.myprofileapp.local.SettingsManager
+import com.example.myprofileapp.viewmodel.NewsViewModel
+import com.example.myprofileapp.di.appModule
+import com.example.myprofileapp.components.NetworkStatusIndicator
 import kotlinx.coroutines.launch
+import org.koin.compose.KoinContext
+import org.koin.compose.koinInject
 
 // ─────────────────────────────────────────────────────────────────────────────
 // App.kt — Root Composable
@@ -70,18 +69,17 @@ val CreamDarkColorScheme = darkColorScheme(
 )
 
 @Composable
-fun App(
-    databaseDriverFactory: DatabaseDriverFactory,
-    settingsFactory: SettingsFactory
-) {
-    val settingsManager = remember { SettingsManager(settingsFactory.createSettings()) }
-    val noteRepository = remember { NoteRepository(NotesDatabase(databaseDriverFactory.createDriver())) }
-    val profileViewModel = remember { ProfileViewModel(settingsManager) }
-    val notesViewModel = remember { NotesViewModel(noteRepository, settingsManager) }
-    val uiState by profileViewModel.uiState.collectAsState()
+fun App() {
+    KoinContext {
+        val profileViewModel = koinInject<ProfileViewModel>()
+        val uiState by profileViewModel.uiState.collectAsState()
 
-    MaterialTheme(colorScheme = if (uiState.isDarkMode) CreamDarkColorScheme else CreamColorScheme) {
-        AppNavigation(profileViewModel, notesViewModel, uiState)
+        MaterialTheme(colorScheme = if (uiState.isDarkMode) CreamDarkColorScheme else CreamColorScheme) {
+            androidx.compose.foundation.layout.Column(modifier = Modifier.fillMaxSize()) {
+                NetworkStatusIndicator()
+                AppNavigation(profileViewModel, uiState)
+            }
+        }
     }
 }
 
@@ -91,9 +89,9 @@ fun App(
 @Composable
 fun AppNavigation(
     profileViewModel: ProfileViewModel,
-    notesViewModel: NotesViewModel,
-    uiState: ProfileUiState
+    uiState: com.example.myprofileapp.data.ProfileUiState
 ) {
+    val notesViewModel = koinInject<NotesViewModel>()
     val newsViewModel = remember { NewsViewModel() }
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)

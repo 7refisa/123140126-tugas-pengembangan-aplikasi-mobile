@@ -31,6 +31,9 @@ import com.example.myprofileapp.viewmodel.NotesViewModel
 import myprofileapp.composeapp.generated.resources.Res
 import myprofileapp.composeapp.generated.resources.profile_refi
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.koinInject
+import com.example.myprofileapp.platform.DeviceInfo
+import com.example.myprofileapp.platform.BatteryInfo
 
 val CreamBackground = Color(0xFFFAF5E9)
 val CardBackground = Color(0xFFF2ECE0)
@@ -55,6 +58,9 @@ fun ProfileScreen(
     val notes by notesViewModel.notes.collectAsState()
     val totalNotes    = notes.size
     val totalFavorites = notes.count { it.isFavorite }
+    
+    val deviceInfo: DeviceInfo = koinInject()
+    val batteryInfo: BatteryInfo = koinInject()
 
     Scaffold(
         topBar = {
@@ -273,11 +279,38 @@ fun ProfileScreen(
             ) {
                 InfoRow(label = "Mata Kuliah", value = "Pengembangan Aplikasi Mobile", isDarkMode = uiState.isDarkMode)
                 HorizontalDivider(modifier = Modifier.padding(horizontal = 24.dp), color = LightText.copy(alpha = 0.2f))
-                InfoRow(label = "Pertemuan",   value = "7 — Local Data Storage", isDarkMode = uiState.isDarkMode)
+                InfoRow(label = "Pertemuan",   value = "8 — Platform-Specific Features", isDarkMode = uiState.isDarkMode)
                 HorizontalDivider(modifier = Modifier.padding(horizontal = 24.dp), color = LightText.copy(alpha = 0.2f))
                 InfoRow(label = "Framework",   value = "Compose Multiplatform", isDarkMode = uiState.isDarkMode)
                 HorizontalDivider(modifier = Modifier.padding(horizontal = 24.dp), color = LightText.copy(alpha = 0.2f))
-                InfoRow(label = "Versi",       value = "1.0.0", isDarkMode = uiState.isDarkMode)
+                InfoRow(label = "Versi",       value = deviceInfo.getAppVersion(), isDarkMode = uiState.isDarkMode)
+            }
+            
+            Spacer(Modifier.height(32.dp))
+
+            // ── Info Perangkat ─────────────────────────────────────────────────────────
+            Text(
+                text       = "Informasi Perangkat",
+                fontSize   = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color      = if (uiState.isDarkMode) Color.White else DarkText
+            )
+            
+            Spacer(Modifier.height(16.dp))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(24.dp))
+                    .background(if (uiState.isDarkMode) MaterialTheme.colorScheme.surfaceVariant else CardBackground)
+                    .padding(vertical = 8.dp)
+            ) {
+                InfoRow(label = "Model", value = deviceInfo.getDeviceName(), isDarkMode = uiState.isDarkMode)
+                HorizontalDivider(modifier = Modifier.padding(horizontal = 24.dp), color = LightText.copy(alpha = 0.2f))
+                InfoRow(label = "Sistem Operasi", value = deviceInfo.getOsVersion(), isDarkMode = uiState.isDarkMode)
+                HorizontalDivider(modifier = Modifier.padding(horizontal = 24.dp), color = LightText.copy(alpha = 0.2f))
+                val batteryStatus = "${batteryInfo.getBatteryLevel()}% " + if (batteryInfo.isCharging()) "(Charging ⚡)" else ""
+                InfoRow(label = "Baterai", value = batteryStatus, isDarkMode = uiState.isDarkMode)
             }
             
             Spacer(Modifier.height(32.dp))
