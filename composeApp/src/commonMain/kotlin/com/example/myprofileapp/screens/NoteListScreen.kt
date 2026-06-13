@@ -18,7 +18,10 @@ import com.example.myprofileapp.data.NoteRepository
 @Composable
 fun NoteListScreen(
     onNoteClick: (Int) -> Unit,
-    onAddClick: () -> Unit
+    onAddClick: () -> Unit,
+    onMenuClick: () -> Unit = {},
+    isDarkMode: Boolean,
+    onToggleDark: () -> Unit
 ) {
     // Langsung baca dari NoteRepository.notes yang reaktif
     val notes = NoteRepository.notes.toList()
@@ -27,7 +30,10 @@ fun NoteListScreen(
         notes            = notes,
         onNoteClick      = onNoteClick,
         onAddClick       = onAddClick,
-        onToggleFavorite = { id -> NoteRepository.toggleFavorite(id) }
+        onMenuClick      = onMenuClick,
+        onToggleFavorite = { id -> NoteRepository.toggleFavorite(id) },
+        isDarkMode       = isDarkMode,
+        onToggleDark     = onToggleDark
     )
 }
 
@@ -36,10 +42,23 @@ fun NoteListContent(
     notes: List<Note>,
     onNoteClick: (Int) -> Unit,
     onAddClick: () -> Unit,
-    onToggleFavorite: (Int) -> Unit
+    onMenuClick: () -> Unit,
+    onToggleFavorite: (Int) -> Unit,
+    isDarkMode: Boolean,
+    onToggleDark: () -> Unit
 ) {
     Scaffold(
-        topBar = { NotesTopBar(title = "Catatan Saya") },
+        topBar = { 
+            NotesTopBar(
+                title = "Catatan Saya", 
+                onMenuClick = onMenuClick,
+                actions = {
+                    IconButton(onClick = onToggleDark) {
+                        Text(if (isDarkMode) "☀️" else "🌙", style = MaterialTheme.typography.titleMedium)
+                    }
+                }
+            ) 
+        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick        = onAddClick,

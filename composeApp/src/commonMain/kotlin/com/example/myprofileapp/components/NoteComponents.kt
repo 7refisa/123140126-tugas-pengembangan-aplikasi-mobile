@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -87,7 +88,7 @@ fun NoteCard(
                     contentDescription = if (note.isFavorite) "Hapus dari favorit"
                     else "Tambah ke favorit",
                     tint               = if (note.isFavorite) PinkAccent
-                    else MaterialTheme.colorScheme.outline
+                    else MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f)
                 )
             }
         }
@@ -99,6 +100,7 @@ fun NoteCard(
 fun NotesTopBar(
     title: String,
     onBack: (() -> Unit)? = null,
+    onMenuClick: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {}
 ) {
     TopAppBar(
@@ -114,6 +116,10 @@ fun NotesTopBar(
             if (onBack != null) {
                 IconButton(onClick = onBack) {
                     Icon(Icons.Default.ArrowBack, contentDescription = "Kembali")
+                }
+            } else if (onMenuClick != null) {
+                IconButton(onClick = onMenuClick) {
+                    Icon(Icons.Default.Menu, contentDescription = "Menu")
                 }
             }
         },

@@ -13,11 +13,26 @@ import com.example.myprofileapp.components.NotesTopBar
 import com.example.myprofileapp.data.NoteRepository
 
 @Composable
-fun FavoritesScreen(onNoteClick: (Int) -> Unit) {
-    val favorites = NoteRepository.notes.filter { it.isFavorite }
+fun FavoritesScreen(
+    onNoteClick: (Int) -> Unit,
+    onMenuClick: () -> Unit = {},
+    isDarkMode: Boolean,
+    onToggleDark: () -> Unit
+) {
+    val favorites = NoteRepository.favoriteNotes.toList()
 
     Scaffold(
-        topBar = { NotesTopBar(title = "Favorit") }
+        topBar = { 
+            NotesTopBar(
+                title = "Favorit", 
+                onMenuClick = onMenuClick,
+                actions = {
+                    IconButton(onClick = onToggleDark) {
+                        Text(if (isDarkMode) "☀️" else "🌙", style = MaterialTheme.typography.titleMedium)
+                    }
+                }
+            ) 
+        }
     ) { innerPadding ->
         if (favorites.isEmpty()) {
             EmptyState(

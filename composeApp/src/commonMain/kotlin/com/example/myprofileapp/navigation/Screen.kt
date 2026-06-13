@@ -21,6 +21,9 @@ sealed class Screen(val route: String) {
     object Profile : Screen("profile")
 
     // ── Detail & Form Screens ───────────────────────────────────────────────
+    
+    /** Screen edit profil pengguna */
+    object EditProfile : Screen("edit_profile")
 
     /** Screen untuk menambah catatan baru (tanpa argument) */
     object AddNote : Screen("add_note")
