@@ -112,7 +112,7 @@ fun NoteListContent(
         },
         floatingActionButton = {
             Column(horizontalAlignment = androidx.compose.ui.Alignment.End) {
-                SmallFloatingActionButton(
+                FloatingActionButton(
                     onClick        = onChatClick,
                     containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                     contentColor   = MaterialTheme.colorScheme.onTertiaryContainer,
