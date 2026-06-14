@@ -15,19 +15,23 @@ sealed class AIError : Exception() {
 suspend fun <T> safeAICall(block: suspend () -> T): Result<T> {
     return try {
         Result.success(block())
-    } catch (e: ClientRequestException) {
-        when (e.response.status.value) {
-            401 -> Result.failure(AIError.Unauthorized("Invalid API key"))
-            429 -> {
-                val retryAfter = e.response.headers["Retry-After"]?.toIntOrNull() ?: 60
-                Result.failure(AIError.RateLimited(retryAfter))
+    } catch (e: Exception) {
+        if (e is kotlinx.coroutines.CancellationException) throw e
+        when (e) {
+            is ClientRequestException -> {
+                when (e.response.status.value) {
+                    401 -> Result.failure(AIError.Unauthorized("Invalid API key"))
+                    429 -> {
+                        val retryAfter = e.response.headers["Retry-After"]?.toIntOrNull() ?: 60
+                        Result.failure(AIError.RateLimited(retryAfter))
+                    }
+                    in 500..599 -> Result.failure(AIError.ServerError("Server error"))
+                    else -> Result.failure(e)
+                }
             }
-            in 500..599 -> Result.failure(AIError.ServerError("Server error"))
+            is IOException -> Result.failure(AIError.NetworkError("No internet connection"))
+            is SerializationException -> Result.failure(AIError.ParseError("Failed to parse response"))
             else -> Result.failure(e)
         }
-    } catch (e: IOException) {
-        Result.failure(AIError.NetworkError("No internet connection"))
-    } catch (e: SerializationException) {
-        Result.failure(AIError.ParseError("Failed to parse response"))
     }
 }
