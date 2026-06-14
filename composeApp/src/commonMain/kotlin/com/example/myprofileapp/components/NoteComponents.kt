@@ -18,7 +18,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import com.example.myprofileapp.data.Note
+import com.example.myprofileapp.utils.TestTags
 
 val PinkAccent = Color(0xFFFF2A6D) // Bolder, more vibrant pink
 
@@ -39,7 +41,8 @@ fun NoteCard(
     Card(
         modifier  = modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick),
+            .clickable(onClick = onClick)
+            .testTag(TestTags.NOTE_ITEM),
         shape     = RoundedCornerShape(16.dp),
         colors    = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary

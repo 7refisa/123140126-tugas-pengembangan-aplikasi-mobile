@@ -8,7 +8,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.testTag
 import com.example.myprofileapp.components.NotesTopBar
+import com.example.myprofileapp.utils.TestTags
 import com.example.myprofileapp.viewmodel.NotesViewModel
 
 // ── ADD NOTE ─────────────────────────────────────────────────────────────────
@@ -37,7 +41,7 @@ fun AddNoteScreen(
                 onValueChange = { title = it },
                 label         = { Text("Judul") },
                 placeholder   = { Text("Masukkan judul catatan...") },
-                modifier      = Modifier.fillMaxWidth(),
+                modifier      = Modifier.fillMaxWidth().testTag(TestTags.TITLE_INPUT),
                 singleLine    = true,
                 shape         = MaterialTheme.shapes.medium
             )
@@ -47,7 +51,7 @@ fun AddNoteScreen(
                 onValueChange = { content = it },
                 label         = { Text("Isi Catatan") },
                 placeholder   = { Text("Tulis catatan di sini...") },
-                modifier      = Modifier.fillMaxWidth().heightIn(min = 200.dp),
+                modifier      = Modifier.fillMaxWidth().heightIn(min = 200.dp).testTag(TestTags.CONTENT_INPUT),
                 maxLines      = 15,
                 shape         = MaterialTheme.shapes.medium
             )
@@ -59,7 +63,7 @@ fun AddNoteScreen(
                         onBack()
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().testTag(TestTags.ADD_BUTTON),
                 enabled  = title.isNotBlank()
             ) {
                 Text(

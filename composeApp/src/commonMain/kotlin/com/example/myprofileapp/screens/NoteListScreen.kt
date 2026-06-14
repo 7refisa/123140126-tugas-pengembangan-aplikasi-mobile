@@ -16,10 +16,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.testTag
 import com.example.myprofileapp.components.EmptyState
 import com.example.myprofileapp.components.NoteCard
 import com.example.myprofileapp.components.NotesTopBar
 import com.example.myprofileapp.data.Note
+import com.example.myprofileapp.utils.TestTags
 import com.example.myprofileapp.viewmodel.NotesViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -123,7 +125,8 @@ fun NoteListContent(
                 FloatingActionButton(
                     onClick        = onAddClick,
                     containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor   = MaterialTheme.colorScheme.onPrimary
+                    contentColor   = MaterialTheme.colorScheme.onPrimary,
+                    modifier       = Modifier.testTag(TestTags.FAB_ADD_NOTE)
                 ) {
                     Icon(Icons.Default.Add, contentDescription = "Tambah catatan")
                 }
@@ -148,7 +151,7 @@ fun NoteListContent(
                 )
             } else {
                 LazyColumn(
-                    modifier            = Modifier.weight(1f),
+                    modifier            = Modifier.weight(1f).testTag(TestTags.NOTES_LIST),
                     contentPadding      = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
