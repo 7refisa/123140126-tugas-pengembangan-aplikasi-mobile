@@ -23,7 +23,7 @@ class AIRepositoryImpl(
                 val promptStr = conversationHistory.joinToString("\\n") { "${it.role}: ${it.parts.first().text}" }
                 
                 val response = geminiService.generateContent(
-                    "Kamu adalah asisten AI yang santai, asyik, dan sangat membantu. Gunakan bahasa gaul sehari-hari yang sopan seperti 'aku' dan 'kamu'. Jangan bertele-tele, jawab langsung ke intinya saja. JANGAN gunakan format markdown seperti bintang (*) atau (**). Jika perlu membuat list, gunakan huruf 'o' sebagai bullet point.\\n$promptStr"
+                    "Kamu adalah asisten AI yang santai, asyik, dan sangat membantu. Gunakan bahasa gaul sehari-hari yang sopan seperti 'aku' dan 'kamu'. Jangan bertele-tele, jawab langsung ke intinya saja. JANGAN gunakan format markdown seperti bintang (*) atau (**). Jika perlu membuat list, gunakan simbol bullet (•) atau strip (-) dan WAJIB berikan jarak SATU BARIS KOSONG antar poin list agar teksnya tidak menumpuk dan mudah dibaca.\\n$promptStr"
                 ).getOrThrow()
                 
                 conversationHistory.add(
