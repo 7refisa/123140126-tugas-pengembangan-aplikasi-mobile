@@ -10,20 +10,16 @@ import org.junit.Before
 import org.junit.After
 import org.junit.runner.RunWith
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.compose.ui.test.junit4.createComposeRule
 import org.robolectric.annotation.Config
 import org.koin.core.context.stopKoin
 
 @RunWith(AndroidJUnit4::class)
-@Config(manifest = Config.NONE, sdk = [33])
+@Config(sdk = [33])
 class NotesScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
-
-    @Before
-    fun setup() {
-        stopKoin()
-    }
 
     @After
     fun tearDown() {
