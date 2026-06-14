@@ -1,4 +1,8 @@
-# Tugas Praktikum Minggu 8 — Platform-Specific Features
+# Tugas Minggu 8 — Platform-Specific Features
+
+| Nama | NIM |
+| --- | --- |
+| Refi Ikhsanti | 123140126 |
 
 **Mata Kuliah:** IF25-22017 Pengembangan Aplikasi Mobile  
 **Program Studi:** Teknik Informatika — Institut Teknologi Sumatera  
@@ -12,7 +16,7 @@ Aplikasi **Notes App & News Reader** berbasis Compose Multiplatform. Dikembangka
 
 ---
 
-## Fitur yang Diimplementasikan (Week 8)
+## Fitur yang Diimplementasikan
 
 - **Dependency Injection (Koin):** Seluruh dependensi (DatabaseDriver, Settings, ViewModel, Repository) kini diinjeksi menggunakan Koin secara global.
 - **DeviceInfo (expect/actual):** Menampilkan nama model perangkat, versi OS, dan versi aplikasi secara dinamis dari API native tiap platform.
@@ -22,7 +26,7 @@ Aplikasi **Notes App & News Reader** berbasis Compose Multiplatform. Dikembangka
 
 ---
 
-## Struktur Folder Terkini (Fokus Week 8)
+## Struktur Folder
 
 ```
 composeApp/src/
@@ -67,6 +71,20 @@ Aplikasi ini menggunakan pola **Dependency Injection (DI)** menggunakan **Koin**
 | Local Relational DB | `app.cash.sqldelight` |
 | Local Preferences | `com.russhwolf:multiplatform-settings` |
 | Networking | `io.ktor:ktor-client-core` |
+
+---
+
+## Screenshoots
+
+| Network Status Indicator | Device & Battery Info |
+| --- | --- |
+| <img width="1080" height="2400" alt="Screenshot_20260614_103645" src="https://github.com/user-attachments/assets/a4959331-5d41-48a9-9892-b1a5dcadb588" /> | <img width="1080" height="2400" alt="Screenshot_20260614_103615" src="https://github.com/user-attachments/assets/1a45fde5-86c2-4a15-bb07-56c024389a87" /> |
+
+---
+
+## Video Demo
+
+https://github.com/user-attachments/assets/be939dfa-7c27-4b37-9fa1-d2f6084ffb6b
 
 ---
 
