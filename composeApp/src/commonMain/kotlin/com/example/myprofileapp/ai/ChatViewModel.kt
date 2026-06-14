@@ -27,7 +27,7 @@ class ChatViewModel(
         // Initial greeting
         _uiState.update { it.copy(
             messages = listOf(
-                ChatMessage("assistant", "Halo! Saya adalah Smart Assistant Anda. Ada yang bisa saya bantu hari ini?")
+                ChatMessage("assistant", "Halo! Ada yang bisa aku bantu hari ini?")
             )
         ) }
     }
