@@ -73,6 +73,7 @@ kotlin {
             implementation(libs.mockk)
             implementation(libs.turbine)
             implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.koin.test)
         }
         val androidUnitTest by getting {
             dependencies {
@@ -86,7 +87,7 @@ kotlin {
         }
         val jvmTest by getting {
             dependencies {
-                implementation(libs.kotlinx.datetime)
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.6.0")
             }
         }
         jvmMain.dependencies {
@@ -94,6 +95,7 @@ kotlin {
             implementation(libs.kotlinx.coroutinesSwing)
             implementation("io.ktor:ktor-client-okhttp:2.3.7")
             implementation(libs.sqldelight.sqlite.driver)
+            implementation(libs.kotlinx.datetime)
         }
         iosMain.dependencies {
             implementation(libs.sqldelight.native.driver)
@@ -177,6 +179,38 @@ sqldelight {
     databases {
         create("NotesDatabase") {
             packageName.set("com.example.myprofileapp.db")
+        }
+    }
+}
+
+kover {
+    reports {
+        filters {
+            excludes {
+                classes(
+                    "com.example.myprofileapp.screens.*",
+                    "com.example.myprofileapp.components.*",
+                    "com.example.myprofileapp.navigation.*",
+                    "com.example.myprofileapp.platform.*",
+                    "com.example.myprofileapp.ai.*",
+                    "com.example.myprofileapp.local.*",
+                    "com.example.myprofileapp.db.*",
+                    "myprofileapp.composeapp.generated.resources.*",
+                    "com.example.myprofileapp.AndroidPlatform*",
+                    "com.example.myprofileapp.BuildConfig*",
+                    "com.example.myprofileapp.Greeting*",
+                    "com.example.myprofileapp.JVMPlatform*",
+                    "com.example.myprofileapp.MainActivity*",
+                    "com.example.myprofileapp.MyApp*",
+                    "com.example.myprofileapp.Platform*",
+                    "com.example.myprofileapp.ProfileComponentsKt*",
+                    "*ComposableSingletons*", 
+                    "*AppKt*", 
+                    "*MainKt*", 
+                    "*ThemeKt*",
+                    "com.example.myprofileapp.di.AppModuleKt*"
+                )
+            }
         }
     }
 }
