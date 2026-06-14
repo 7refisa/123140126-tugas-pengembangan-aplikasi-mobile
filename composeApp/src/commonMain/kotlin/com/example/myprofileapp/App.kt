@@ -28,6 +28,8 @@ import com.example.myprofileapp.screens.ProfileScreen
 import com.example.myprofileapp.screens.EditProfileScreen
 import com.example.myprofileapp.screens.NewsListScreen
 import com.example.myprofileapp.screens.NewsDetailScreen
+import com.example.myprofileapp.ai.ChatScreen
+import com.example.myprofileapp.ai.ChatViewModel
 import com.example.myprofileapp.viewmodel.ProfileViewModel
 import com.example.myprofileapp.viewmodel.NotesViewModel
 import com.example.myprofileapp.viewmodel.NewsViewModel
@@ -36,6 +38,7 @@ import com.example.myprofileapp.components.NetworkStatusIndicator
 import kotlinx.coroutines.launch
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 // ─────────────────────────────────────────────────────────────────────────────
 // App.kt — Root Composable
@@ -171,6 +174,7 @@ fun AppNavigation(
                         viewModel = notesViewModel,
                         onNoteClick = { noteId -> navController.navigate(Screen.NoteDetail.createRoute(noteId)) },
                         onAddClick = { navController.navigate(Screen.AddNote.route) },
+                        onChatClick = { navController.navigate("chat") },
                         onMenuClick = { scope.launch { drawerState.open() } },
                         isDarkMode = uiState.isDarkMode,
                         onToggleDark = { profileViewModel.toggleDarkMode() }
@@ -306,6 +310,17 @@ fun AppNavigation(
                             onBack = { navController.popBackStack() }
                         )
                     }
+                }
+                
+                // ================================================================
+                // CHAT
+                // ================================================================
+                composable("chat") {
+                    val chatViewModel = koinViewModel<ChatViewModel>()
+                    ChatScreen(
+                        viewModel = chatViewModel,
+                        onNavigateBack = { navController.popBackStack() }
+                    )
                 }
             }
         }

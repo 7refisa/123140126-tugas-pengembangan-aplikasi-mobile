@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -27,6 +28,7 @@ fun NoteListScreen(
     viewModel: NotesViewModel,
     onNoteClick: (Long) -> Unit,
     onAddClick: () -> Unit,
+    onChatClick: () -> Unit,
     onMenuClick: () -> Unit = {},
     isDarkMode: Boolean,
     onToggleDark: () -> Unit
@@ -43,6 +45,7 @@ fun NoteListScreen(
         onSearchQueryChange = { viewModel.setSearchQuery(it) },
         onNoteClick      = onNoteClick,
         onAddClick       = onAddClick,
+        onChatClick      = onChatClick,
         onMenuClick      = onMenuClick,
         onToggleFavorite = { id -> viewModel.toggleFavorite(id) },
         isDarkMode       = isDarkMode,
@@ -59,6 +62,7 @@ fun NoteListContent(
     onSearchQueryChange: (String) -> Unit,
     onNoteClick: (Long) -> Unit,
     onAddClick: () -> Unit,
+    onChatClick: () -> Unit,
     onMenuClick: () -> Unit,
     onToggleFavorite: (Long) -> Unit,
     isDarkMode: Boolean,
@@ -107,12 +111,22 @@ fun NoteListContent(
             ) 
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick        = onAddClick,
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor   = MaterialTheme.colorScheme.onPrimary
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Tambah catatan")
+            Column(horizontalAlignment = androidx.compose.ui.Alignment.End) {
+                SmallFloatingActionButton(
+                    onClick        = onChatClick,
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    contentColor   = MaterialTheme.colorScheme.onTertiaryContainer,
+                    modifier       = Modifier.padding(bottom = 16.dp)
+                ) {
+                    Icon(Icons.Default.Face, contentDescription = "Smart Assistant")
+                }
+                FloatingActionButton(
+                    onClick        = onAddClick,
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor   = MaterialTheme.colorScheme.onPrimary
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Tambah catatan")
+                }
             }
         }
     ) { innerPadding ->
