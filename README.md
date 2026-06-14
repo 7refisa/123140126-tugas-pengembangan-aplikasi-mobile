@@ -18,10 +18,10 @@ Aplikasi **Notes App & News Reader** berbasis Compose Multiplatform. Pada minggu
 
 ## Fitur yang Diimplementasikan
 
-- **Gemini API Integration:** Menggunakan `Ktor Client` untuk terhubung ke endpoint Gemini 2.0 Flash (`generateContent`).
+- **Gemini API Integration:** Menggunakan `Ktor Client` untuk terhubung ke endpoint `gemini-flash-latest` (otomatis mendeteksi model tercepat terbaru yang didukung).
 - **Smart Chatbot / AI Assistant:** Menyediakan antarmuka interaktif bagi pengguna untuk mengobrol dengan AI, dilengkapi memori percakapan (*multi-turn*).
-- **Prompt Engineering:** Disematkan `System Prompt` khusus agar AI bertindak konsisten sebagai asisten produktivitas.
-- **Robust Error Handling:** Menggunakan mekanisme `sealed class` untuk pemetaan error API (seperti limit kuota atau token kadaluwarsa) dan dilengkapi dengan *retry with exponential backoff*.
+- **Prompt Engineering & Persona:** Disematkan `System Prompt` khusus agar AI bertindak konsisten sebagai asisten produktivitas dengan gaya bahasa yang natural, *to the point*, dan tidak bertele-tele.
+- **Robust Error Handling:** Menggunakan mekanisme `sealed class` untuk pemetaan error API, *timeout handling* yang dioptimasi (60 detik), dan *safe parsing*.
 - **Responsive AI UI/UX:** Menampilkan animasi *typing indicator* reaktif saat AI sedang berpikir dan desain *bubble chat* yang rapi.
 - Mempertahankan fungsionalitas dari tugas sebelumnya (SQLDelight, Ktor, Settings, DI Koin, Expect/Actual Platform APIs).
 
