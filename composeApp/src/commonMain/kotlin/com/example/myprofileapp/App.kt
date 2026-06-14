@@ -75,9 +75,14 @@ fun App() {
         val uiState by profileViewModel.uiState.collectAsState()
 
         MaterialTheme(colorScheme = if (uiState.isDarkMode) CreamDarkColorScheme else CreamColorScheme) {
-            androidx.compose.foundation.layout.Column(modifier = Modifier.fillMaxSize()) {
-                NetworkStatusIndicator()
+            androidx.compose.foundation.layout.Box(modifier = Modifier.fillMaxSize()) {
                 AppNavigation(profileViewModel, uiState)
+                
+                androidx.compose.foundation.layout.Box(
+                    modifier = Modifier.align(androidx.compose.ui.Alignment.TopCenter)
+                ) {
+                    NetworkStatusIndicator()
+                }
             }
         }
     }
