@@ -1,4 +1,4 @@
-# Tugas Minggu 8 — Platform-Specific Features
+# Tugas Minggu 9 — Integrasi AI API
 
 | Nama | NIM |
 | --- | --- |
@@ -12,17 +12,18 @@
 
 ## Deskripsi
 
-Aplikasi **Notes App & News Reader** berbasis Compose Multiplatform. Dikembangkan dari tugas minggu sebelumnya dengan menambahkan fungsionalitas fitur spesifik platform (*Platform-Specific Features*). Aplikasi ini kini mengimplementasikan **Dependency Injection** menggunakan Koin dan menggunakan mekanisme `expect/actual` dari Kotlin Multiplatform untuk mengakses API native tiap platform seperti informasi perangkat dan status jaringan.
+Aplikasi **Notes App & News Reader** berbasis Compose Multiplatform. Pada minggu ini, aplikasi ditambahkan fitur kecerdasan buatan berupa **Smart Assistant** terintegrasi dengan **Gemini API**. Asisten cerdas ini siap membantu pengguna merangkum catatan, memberikan ide, dan berbincang interaktif langsung dari dalam aplikasi.
 
 ---
 
 ## Fitur yang Diimplementasikan
 
-- **Dependency Injection (Koin):** Seluruh dependensi (DatabaseDriver, Settings, ViewModel, Repository) kini diinjeksi menggunakan Koin secara global.
-- **DeviceInfo (expect/actual):** Menampilkan nama model perangkat, versi OS, dan versi aplikasi secara dinamis dari API native tiap platform.
-- **NetworkMonitor (expect/actual):** Mendeteksi koneksi internet secara *real-time* dan menampilkan indikator merah (No Internet Connection) jika offline.
-- **BatteryInfo (Bonus):** Menampilkan sisa persentase baterai dan status *charging* di halaman Profil.
-- Mempertahankan fungsionalitas dari tugas sebelumnya (SQLDelight, Ktor, Settings).
+- **Gemini API Integration:** Menggunakan `Ktor Client` untuk terhubung ke endpoint Gemini 2.0 Flash (`generateContent`).
+- **Smart Chatbot / AI Assistant:** Menyediakan antarmuka interaktif bagi pengguna untuk mengobrol dengan AI, dilengkapi memori percakapan (*multi-turn*).
+- **Prompt Engineering:** Disematkan `System Prompt` khusus agar AI bertindak konsisten sebagai asisten produktivitas.
+- **Robust Error Handling:** Menggunakan mekanisme `sealed class` untuk pemetaan error API (seperti limit kuota atau token kadaluwarsa) dan dilengkapi dengan *retry with exponential backoff*.
+- **Responsive AI UI/UX:** Menampilkan animasi *typing indicator* reaktif saat AI sedang berpikir dan desain *bubble chat* yang rapi.
+- Mempertahankan fungsionalitas dari tugas sebelumnya (SQLDelight, Ktor, Settings, DI Koin, Expect/Actual Platform APIs).
 
 ---
 
@@ -69,8 +70,21 @@ Aplikasi ini menggunakan pola **Dependency Injection (DI)** menggunakan **Koin**
 | UI Framework | Compose Multiplatform |
 | Dependency Injection | `io.insert-koin:koin-core`, `koin-compose` |
 | Local Relational DB | `app.cash.sqldelight` |
-| Local Preferences | `com.russhwolf:multiplatform-settings` |
-| Networking | `io.ktor:ktor-client-core` |
+| Generative AI | Google Gemini 2.0 Flash API |
+| Networking | `io.ktor:ktor-client-core`, `ktor-client-content-negotiation` |
+| Data Serialization | `org.jetbrains.kotlinx:kotlinx-serialization-json` |
+
+---
+
+## Prasyarat (API Key Gemini)
+
+Untuk menjalankan fitur AI, Anda wajib memasukkan **Gemini API Key**:
+1. Dapatkan kunci gratis di [Google AI Studio](https://aistudio.google.com).
+2. Buat file bernama `local.properties` di folder root project.
+3. Tambahkan baris berikut:
+   ```properties
+   GEMINI_API_KEY=AIzaSy_KODE_RAHASIA_ANDA
+   ```
 
 ---
 
