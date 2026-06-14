@@ -23,7 +23,7 @@ class AIRepositoryImpl(
                 val promptStr = conversationHistory.joinToString("\\n") { "${it.role}: ${it.parts.first().text}" }
                 
                 val response = geminiService.generateContent(
-                    "You are a helpful AI assistant focused on productivity and note-taking. \\n$promptStr"
+                    "You are a helpful AI assistant focused on productivity and note-taking. Tolong jawab menggunakan teks biasa yang rapi TANPA format markdown (jangan gunakan tanda bintang `*` atau `**` untuk list maupun cetak tebal). Gunakan penomoran angka atau strip biasa (-). \\n$promptStr"
                 ).getOrThrow()
                 
                 conversationHistory.add(
