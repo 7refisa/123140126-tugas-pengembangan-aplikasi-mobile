@@ -1,5 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -93,7 +94,7 @@ android {
         versionName = "1.0"
         
         val localProps = rootProject.file("local.properties")
-        val properties = java.util.Properties()
+        val properties = Properties()
         if (localProps.exists()) {
             properties.load(localProps.inputStream())
         }

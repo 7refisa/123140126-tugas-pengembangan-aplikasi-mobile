@@ -38,7 +38,6 @@ import com.example.myprofileapp.components.NetworkStatusIndicator
 import kotlinx.coroutines.launch
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
-import org.koin.compose.viewmodel.koinViewModel
 
 // ─────────────────────────────────────────────────────────────────────────────
 // App.kt — Root Composable
@@ -316,7 +315,7 @@ fun AppNavigation(
                 // CHAT
                 // ================================================================
                 composable("chat") {
-                    val chatViewModel = koinViewModel<ChatViewModel>()
+                    val chatViewModel = koinInject<ChatViewModel>()
                     ChatScreen(
                         viewModel = chatViewModel,
                         onNavigateBack = { navController.popBackStack() }
