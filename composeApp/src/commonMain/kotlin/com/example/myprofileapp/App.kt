@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -75,13 +76,17 @@ fun App() {
         val uiState by profileViewModel.uiState.collectAsState()
 
         MaterialTheme(colorScheme = if (uiState.isDarkMode) CreamDarkColorScheme else CreamColorScheme) {
-            androidx.compose.foundation.layout.Box(modifier = Modifier.fillMaxSize()) {
-                AppNavigation(profileViewModel, uiState)
-                
+            androidx.compose.material3.Scaffold(
+                topBar = { NetworkStatusIndicator() },
+                containerColor = Color.Transparent
+            ) { innerPadding ->
                 androidx.compose.foundation.layout.Box(
-                    modifier = Modifier.align(androidx.compose.ui.Alignment.TopCenter)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .consumeWindowInsets(innerPadding)
                 ) {
-                    NetworkStatusIndicator()
+                    AppNavigation(profileViewModel, uiState)
                 }
             }
         }
