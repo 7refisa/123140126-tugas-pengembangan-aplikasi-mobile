@@ -9,7 +9,7 @@ import io.ktor.http.*
 
 class GeminiService(private val client: HttpClient) {
     private val baseUrl = "https://generativelanguage.googleapis.com/v1beta"
-    private val model = "gemini-2.0-flash"
+    private val model = "gemini-flash-latest"
     
     suspend fun generateContent(prompt: String): Result<String> = runCatching {
         val request = GeminiRequest(
