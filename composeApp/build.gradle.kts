@@ -143,6 +143,13 @@ android {
             isMinifyEnabled = false
         }
     }
+    
+    // Disable testReleaseUnitTest to prevent Robolectric manifest errors in Release variant
+    tasks.withType<Test> {
+        if (name == "testReleaseUnitTest") {
+            enabled = false
+        }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
