@@ -69,6 +69,19 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.mockk)
+            implementation(libs.turbine)
+            implementation(libs.kotlinx.coroutines.test)
+        }
+        val androidUnitTest by getting {
+            dependencies {
+                implementation(libs.junit)
+                implementation(libs.robolectric)
+                implementation(libs.compose.ui.test.junit4)
+                implementation(libs.compose.ui.test.manifest)
+                implementation(libs.androidx.testExt.junit)
+                implementation(libs.koin.test)
+            }
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -109,6 +122,14 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            all {
+                it.systemProperty("robolectric.dependency.repo.url", "https://repo1.maven.org/maven2/")
+            }
         }
     }
     buildTypes {
