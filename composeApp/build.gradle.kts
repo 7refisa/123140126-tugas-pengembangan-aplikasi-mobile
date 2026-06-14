@@ -91,7 +91,20 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        
+        val localProps = rootProject.file("local.properties")
+        val properties = java.util.Properties()
+        if (localProps.exists()) {
+            properties.load(localProps.inputStream())
+        }
+        
+        buildConfigField("String", "GEMINI_API_KEY", "\"${properties.getProperty("GEMINI_API_KEY", "")}\"")
     }
+    
+    buildFeatures {
+        buildConfig = true
+    }
+    
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
