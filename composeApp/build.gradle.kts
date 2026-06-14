@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.composeHotReload)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.sqldelight)
+    alias(libs.plugins.kover)
 }
 
 kotlin {
@@ -81,6 +82,11 @@ kotlin {
                 implementation(libs.compose.ui.test.manifest)
                 implementation(libs.androidx.testExt.junit)
                 implementation(libs.koin.test)
+            }
+        }
+        val jvmTest by getting {
+            dependencies {
+                implementation(libs.kotlinx.datetime)
             }
         }
         jvmMain.dependencies {

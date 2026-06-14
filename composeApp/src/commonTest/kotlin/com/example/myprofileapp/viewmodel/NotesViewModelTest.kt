@@ -78,6 +78,9 @@ class NotesViewModelTest {
 
         // Act & Assert using Turbine
         viewModel.notes.test {
+            val initialNotes = awaitItem()
+            assertEquals(0, initialNotes.size) // initial state
+
             val emittedNotes = awaitItem()
             assertEquals(1, emittedNotes.size)
             assertEquals("Test Note", emittedNotes[0].title)

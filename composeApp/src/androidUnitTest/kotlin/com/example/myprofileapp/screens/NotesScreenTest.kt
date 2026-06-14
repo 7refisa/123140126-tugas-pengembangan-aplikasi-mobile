@@ -6,16 +6,29 @@ import com.example.myprofileapp.data.Note
 import com.example.myprofileapp.utils.TestTags
 import org.junit.Rule
 import org.junit.Test
+import org.junit.Before
+import org.junit.After
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.robolectric.annotation.Config
+import org.koin.core.context.stopKoin
 
-@RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE)
+@RunWith(AndroidJUnit4::class)
+@Config(manifest = Config.NONE, sdk = [33])
 class NotesScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
+
+    @Before
+    fun setup() {
+        stopKoin()
+    }
+
+    @After
+    fun tearDown() {
+        stopKoin()
+    }
 
     @Test
     fun testEmptyStateIsDisplayedWhenNoNotes() {
