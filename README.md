@@ -83,22 +83,22 @@ Untuk menjalankan fitur AI, Anda wajib memasukkan **Gemini API Key**:
 2. Buat file bernama `local.properties` di folder root project.
 3. Tambahkan baris berikut:
    ```properties
-   GEMINI_API_KEY=AIzaSy_KODE_RAHASIA_ANDA
+   GEMINI_API_KEY=YOUR_GEMINI_API
    ```
 
 ---
 
 ## Screenshoots
 
-| Network Status Indicator | Device & Battery Info |
+| Error Handling | Loading State |
 | --- | --- |
-| <img width="1080" height="2400" alt="Screenshot_20260614_103645" src="https://github.com/user-attachments/assets/a4959331-5d41-48a9-9892-b1a5dcadb588" /> | <img width="1080" height="2400" alt="Screenshot_20260614_103615" src="https://github.com/user-attachments/assets/1a45fde5-86c2-4a15-bb07-56c024389a87" /> |
+| <img width="1080" height="2400" alt="Screenshot_20260614_155808" src="https://github.com/user-attachments/assets/4641aa6f-8579-48d5-9220-8021f4b0e825" /> | <img width="1080" height="2400" alt="Screenshot_20260614_160004" src="https://github.com/user-attachments/assets/02cc721a-7f0e-4ee5-afcf-3a5066f2e60b" /> |
 
 ---
 
 ## Video Demo
 
-https://github.com/user-attachments/assets/be939dfa-7c27-4b37-9fa1-d2f6084ffb6b
+https://github.com/user-attachments/assets/eb38bc54-4280-4bd3-ab1e-5ef19ccf7554
 
 ---
 
